@@ -74,10 +74,19 @@ public class UIArriendoEquipos {
         System.out.println("\nLISTADO DE CLIENTES");
         System.out.println("------------");
         System.out.printf("%-25s%-12s%10s%n", "RUT", "Nombre", "Direccion", "Estado");
-        for (int i=0; i< datosClientes.length; i++) {
+        for (int i = 0; i < datosClientes.length; i++) {
             System.out.printf("%-25s%-12s%,10d%n", datosClientes[i][0], datosClientes[i][1], datosClientes[i][2],
                     datosClientes[i][3]);
         }
     }
+
     private void listaEquipos() {
+        String[][] datosEquipos = ControladorClientes.getInstancia().list();
+        System.out.println("\nLISTADO DE EQUIPOS");
+        System.out.println("------------");
+        System.out.printf("%-25s%-12s%10s%n", "Codigo", "Descripcion", "Precio Estado");
+        for (int i = 0; i < datosEquipos.length; i++) {
+            System.out.printf("%-25s%-12s%,10d%n", datosEquipos[i][0], datosEquipos[i][1], datosEquipos[i][2]);
+        }
     }
+}
