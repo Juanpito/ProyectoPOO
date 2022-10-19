@@ -28,13 +28,13 @@ public class ControladorArriendoEquipos {
         todosClientes.add(new Cliente(nom, rut, dir, tel));
     }
 
-    public void creaEquipo(long cod, String desc, long precio) {
+    public void creaEquipo (String desc,long cod, long precio) {
         todosEquipos.add(new Equipo(cod, desc, precio));
     }
 
     public String[][] listaClientes() {
-        String clientesArr[][] = new String[todosClientes.size()][5]];
-        int i=0;
+        String clientesArr[][] = new String[todosClientes.size()][5];
+        int i = 0;
         for (Cliente cliente : todosClientes) {
             clientesArr[i][0] = cliente.getRut();
             clientesArr[i][1] = cliente.getNombre();
@@ -43,8 +43,9 @@ public class ControladorArriendoEquipos {
             clientesArr[i][4] = String.valueOf(cliente.isActivo());
 
             i++;
-            return clientesArr;
+
         }
+        return clientesArr;
     }
 
     public String[][] listaEquipos() {

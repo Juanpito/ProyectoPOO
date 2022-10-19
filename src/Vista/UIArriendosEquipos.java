@@ -1,17 +1,17 @@
 package Vista;
 import java.util.Scanner;
-import Controlador.ControladorClientes;
+import Controlador.ControladorArriendoEquipos;
 import Modelo.Cliente;
 public class UIArriendoEquipos {
     private static UIArriendoEquipos instancia = null;
     private final Scanner tcld;
 
-    private UIClientes() {
+    private UIArriendoEquipos() {
         tcld = new Scanner(System.in);
         tcld.useDelimiter("[\t|\r\n]+");
     }
 
-    public static UIArriendoEquipos geUItInstancia() {
+    public static UIArriendoEquipos getInstancia() {
         if (instancia == null) {
             instancia = new UIArriendoEquipos();
         }
@@ -27,7 +27,7 @@ public class UIArriendoEquipos {
             System.out.println("3. Lista todos los clientes");
             System.out.println("4. Lista todos los equipos");
             System.out.println("5. Salir");
-            System.out.println("\tIngrese opcion")
+            System.out.println("\tIngrese opcion");
             opcion = tcld.nextInt();
 
             switch (opcion) {
@@ -53,7 +53,7 @@ public class UIArriendoEquipos {
         domicilio = tcld.next();
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
-        ControladorArriendoEquipos.getInstancia().creaCliente(nombre, rut, numerotelefono, domicilio);
+        ControladorArriendoEquipos.getInstance().creaCliente(nombre, rut, numerotelefono, domicilio);
     }
 
     private void creaEquipo() {
@@ -65,11 +65,11 @@ public class UIArriendoEquipos {
         descripcion = tcld.next();
         System.out.print("Ingrese precio del arriendo por dia: ");
         precio = tcld.nextInt();
-        ControladorArriendoEquipos.getInstancia().creaEquipo(descripcion, codigo, precio);
+        ControladorArriendoEquipos.getInstance().creaEquipo(descripcion, codigo, precio);
     }
 
     private void listaClientes() {
-        String[][] datosClientes = ControladorArriendoEquipos.getInstancia().list();
+        String[][] datosClientes = ControladorArriendoEquipos.getInstance().listaClientes();
         System.out.println("\nLISTADO DE CLIENTES");
         System.out.println("------------");
         System.out.printf("%-25s%-12s%10s%n", "RUT", "Nombre", "Direccion", "Estado");
@@ -80,7 +80,7 @@ public class UIArriendoEquipos {
     }
 
     private void listaEquipos() {
-        String[][] datosEquipos = ControladorArriendoEquipos.getInstancia().list();
+        String[][] datosEquipos = ControladorArriendoEquipos.getInstance().listaEquipos();
         System.out.println("\nLISTADO DE EQUIPOS");
         System.out.println("------------");
         System.out.printf("%-25s%-12s%10s%n", "Codigo", "Descripcion", "Precio Estado");
