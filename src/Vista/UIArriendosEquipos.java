@@ -1,5 +1,4 @@
 package Vista;
-//LUCIANO VENEGAS
 import java.util.Scanner;
 import Controlador.ControladorClientes;
 import Modelo.Cliente;
