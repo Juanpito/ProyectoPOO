@@ -1,5 +1,4 @@
 package Vista;
-
 import java.util.Scanner;
 import Controlador.ControladorClientes;
 import Modelo.Cliente;
