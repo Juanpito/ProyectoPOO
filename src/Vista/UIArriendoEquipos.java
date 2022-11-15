@@ -1,4 +1,5 @@
 package Vista;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import Controlador.ControladorArriendoEquipos;
 import Modelo.Cliente;
@@ -20,6 +21,8 @@ public class UIArriendoEquipos {
 
     public void menu() {
         int opcion;
+        System.out.println("BIENVENIDO");
+        System.out.println("");
         do {
             System.out.println("*** MENU DE OPCIONES ***");
             System.out.println("1. Crear un nuevo cliente");
@@ -27,7 +30,8 @@ public class UIArriendoEquipos {
             System.out.println("3. Lista todos los clientes");
             System.out.println("4. Lista todos los equipos");
             System.out.println("5. Salir");
-            System.out.println("\tIngrese opcion");
+            System.out.println("");
+            System.out.print("Ingrese opcion: ");
             opcion = tcld.nextInt();
 
             switch (opcion) {
@@ -47,12 +51,13 @@ public class UIArriendoEquipos {
         String nombre, domicilio, rut, numerotelefono;
         System.out.print("Ingrese rut: ");
         rut = tcld.next();
-        System.out.print("\nIngrese nombre: ");
+        System.out.print("Ingrese nombre: ");
         nombre = tcld.next();
         System.out.print("Ingrese domicilio ");
         domicilio = tcld.next();
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
+        System.out.println("");
         ControladorArriendoEquipos.getInstance().creaCliente(nombre, rut, numerotelefono, domicilio);
     }
 
@@ -72,20 +77,24 @@ public class UIArriendoEquipos {
         String[][] datosClientes = ControladorArriendoEquipos.getInstance().listaClientes();
         System.out.println("\nLISTADO DE CLIENTES");
         System.out.println("------------");
-        System.out.printf("%-25s%-12s%10s%n", "RUT", "Nombre", "Direccion", "Estado");
+        System.out.printf("%-25s%-25s%-25s%-25s%n", "RUT", "Nombre", "Direccion", "Estado");
         for (int i = 0; i < datosClientes.length; i++) {
-            System.out.printf("%-25s%-12s%,10d%n", datosClientes[i][0], datosClientes[i][1], datosClientes[i][2],
+            System.out.printf("%-25s%-25s%-25s%-25s%n", datosClientes[i][0], datosClientes[i][1], datosClientes[i][2],
                     datosClientes[i][3]);
+
         }
+
+        System.out.println("");
     }
 
     private void listaEquipos() {
         String[][] datosEquipos = ControladorArriendoEquipos.getInstance().listaEquipos();
         System.out.println("\nLISTADO DE EQUIPOS");
         System.out.println("------------");
-        System.out.printf("%-25s%-12s%10s%n", "Codigo", "Descripcion", "Precio Estado");
+        System.out.printf("%-25s%-25s%-25s%-25s%n", "Codigo", "Descripcion", "Precio","Estado");
         for (int i = 0; i < datosEquipos.length; i++) {
-            System.out.printf("%-25s%-12s%,10d%n", datosEquipos[i][0], datosEquipos[i][1], datosEquipos[i][2]);
+            System.out.printf("%-25s%-25s%-25s%-25s%n", datosEquipos[i][0], datosEquipos[i][1], datosEquipos[i][2],datosEquipos[i][3]);
         }
+        System.out.println("");
     }
 }
