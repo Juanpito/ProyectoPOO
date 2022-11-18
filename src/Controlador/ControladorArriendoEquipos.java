@@ -40,8 +40,12 @@ public class ControladorArriendoEquipos {
             clientesArr[i][1] = cliente.getNombre();
             clientesArr[i][2] = cliente.getDireccion();
             clientesArr[i][3] = cliente.getTelefono();
-            clientesArr[i][4] = String.valueOf(cliente.isActivo());
 
+            if(cliente.isActivo()==true) {
+                clientesArr[i][4]="activo";
+            }else{
+                clientesArr[i][4]="inactivo";
+            }
             i++;
 
         }
