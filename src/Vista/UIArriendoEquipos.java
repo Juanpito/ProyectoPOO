@@ -71,6 +71,7 @@ public class UIArriendoEquipos {
         System.out.print("Ingrese precio del arriendo por dia: ");
         precio = tcld.nextInt();
         ControladorArriendoEquipos.getInstance().creaEquipo(descripcion, codigo, precio);
+        System.out.println("");
     }
 
     private void listaClientes() {
