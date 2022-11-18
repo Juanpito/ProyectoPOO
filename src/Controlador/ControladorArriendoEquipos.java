@@ -44,6 +44,7 @@ public class ControladorArriendoEquipos {
             if(cliente.isActivo()==true) {
                 clientesArr[i][4]="activo";
             }else{
+
                 clientesArr[i][4]="inactivo";
             }
             i++;
