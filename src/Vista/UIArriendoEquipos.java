@@ -58,7 +58,7 @@ public class UIArriendoEquipos {
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
         System.out.println("");
-        ControladorArriendoEquipos.getInstance().creaCliente(nombre, rut, numerotelefono, domicilio);
+        ControladorArriendoEquipos.getInstance().creaCliente(rut, nombre, domicilio, numerotelefono);
     }
 
     private void creaEquipo() {
@@ -77,10 +77,11 @@ public class UIArriendoEquipos {
         String[][] datosClientes = ControladorArriendoEquipos.getInstance().listaClientes();
         System.out.println("\nLISTADO DE CLIENTES");
         System.out.println("------------");
-        System.out.printf("%-25s%-25s%-25s%-25s%n", "RUT", "Nombre", "Direccion", "Estado");
+        System.out.printf("%-25s%-25s%-25s%-25s%-25s%n", "RUT", "Nombre", "Direccion", "telefono","Estado");
+
         for (int i = 0; i < datosClientes.length; i++) {
-            System.out.printf("%-25s%-25s%-25s%-25s%n", datosClientes[i][0], datosClientes[i][1], datosClientes[i][2],
-                    datosClientes[i][3]);
+            System.out.printf("%-25s%-25s%-25s%-25s%-25s%n", datosClientes[i][0], datosClientes[i][1], datosClientes[i][2],
+                    datosClientes[i][3],datosClientes[i][4]);
 
         }
 

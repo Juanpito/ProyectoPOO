@@ -11,7 +11,6 @@ public class Arriendo {
     private LocalDate fechaInicio;
     private LocalDate fechaDevolucion;
     private EstadoArriendo estado;
-
     ArrayList<DetalleArriendo>detalleArriendos;
     Cliente cliente;
 
