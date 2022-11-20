@@ -8,7 +8,7 @@ public class Cliente {
     private String direccion;
     private String telefono;
     private boolean activo;
-    ArrayList<Arriendo>arriendos;
+    private ArrayList<Arriendo>arriendos;
 
     public Cliente(String rut, String nombre, String direccion, String telefono) {
         this.rut = rut;
@@ -62,8 +62,14 @@ public class Cliente {
     }
 
     public Arriendo[]getArriendosPorDevolver(){
-        return arriendos.toArray(new Arriendo[0]);
+        ArrayList<Arriendo>estosArriendos=new ArrayList<>();//en este metodo todo aquello que es entregado, es lo que falta por devolver
+        for(Arriendo arriendo:arriendos){
+            if (arriendo.getEstado()==EstadoArriendo.ENTREGADO){
+                estosArriendos.add(arriendo);
+            }
 
+        }
+        return estosArriendos.toArray(new Arriendo[0]);
     }
 
 

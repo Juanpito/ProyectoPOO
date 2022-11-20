@@ -22,6 +22,7 @@ public class Arriendo {
         cliente.addArriendo(this);
         this.estado=EstadoArriendo.INICIADO;
         this.detalleArriendos=new ArrayList<>();
+        fechaDevolucion=null;//aqui es null porque como sabemos es un atributo que aun no existe sino hasta cuando se devuelva
 
     }
 
@@ -88,8 +89,8 @@ public class Arriendo {
 
 
     public String[][]getDetallesToString(){
-
-        if (detalleArriendos==null){
+        //aqui pregunto no solo si detalleArriendo es null, sino tambien si es iniciado(tenor del proyecto word)
+        if (detalleArriendos==null&&this.estado.equals(EstadoArriendo.INICIADO)){
             String vacio[][]=new String [0][0];
             return vacio;
         }
