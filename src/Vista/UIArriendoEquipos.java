@@ -58,6 +58,17 @@ public class UIArriendoEquipos {
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
         System.out.println("");
+        try {
+            for (Object nuevo : todosClientes) {
+                if (nuevo != todosClientes){
+                    System.out.println("Cliente creado");
+                }else{
+                    throw new Exception.Excepciones("El cliente ya esta registrado");
+                }
+            }
+        }catch (Exception e){
+
+        }
         UIArriendoEquipos.getInstancia().creaCliente(rut, nombre, domicilio, numerotelefono);
     }
 
