@@ -9,6 +9,7 @@ public class Cliente {
     private String telefono;
     private boolean activo;
     private ArrayList<Arriendo>arriendos;
+    private ArrayList<Cliente>todosClientes;
 
     public Cliente(String rut, String nombre, String direccion, String telefono) {
         this.rut = rut;

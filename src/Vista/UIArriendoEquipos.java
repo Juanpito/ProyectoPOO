@@ -58,7 +58,7 @@ public class UIArriendoEquipos {
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
         System.out.println("");
-        ControladorArriendoEquipos.getInstance().creaCliente(rut, nombre, domicilio, numerotelefono);
+        UIArriendoEquipos.getInstancia().creaCliente(rut, nombre, domicilio, numerotelefono);
     }
 
     private void creaEquipo() {
@@ -70,12 +70,12 @@ public class UIArriendoEquipos {
         descripcion = tcld.next();
         System.out.print("Ingrese precio del arriendo por dia: ");
         precio = tcld.nextInt();
-        ControladorArriendoEquipos.getInstance().creaEquipo(descripcion, codigo, precio);
+        UIArriendoEquipos.getInstancia().creaEquipo(descripcion, codigo, precio);
         System.out.println("");
     }
 
     private void listaClientes() {
-        String[][] datosClientes = ControladorArriendoEquipos.getInstance().listaClientes();
+        String[][] datosClientes = UIArriendoEquipos.getInstancia().listaClientes();
         System.out.println("\nLISTADO DE CLIENTES");
         System.out.println("------------");
         System.out.printf("%-25s%-25s%-25s%-25s%-25s%n", "RUT", "Nombre", "Direccion", "telefono","Estado");
@@ -90,7 +90,7 @@ public class UIArriendoEquipos {
     }
 
     private void listaEquipos() {
-        String[][] datosEquipos = ControladorArriendoEquipos.getInstance().listaEquipos();
+        String[][] datosEquipos = UIArriendoEquipos.getInstancia().listaEquipos();
         System.out.println("\nLISTADO DE EQUIPOS");
         System.out.println("------------");
         System.out.printf("%-25s%-25s%-25s%-25s%n", "Codigo", "Descripcion", "Precio","Estado");
@@ -99,4 +99,5 @@ public class UIArriendoEquipos {
         }
         System.out.println("");
     }
+    private void listaArriendos(){}
 }
