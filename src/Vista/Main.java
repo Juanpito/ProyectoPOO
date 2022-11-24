@@ -1,7 +1,10 @@
 package Vista;
 
 public class Main {
+
     public static void main(String[] args) {
-        UIArriendoEquipos.getInstancia().menu();
+        System.out.println("BIENVENIDO");
+        System.out.println("");
+        UIArriendoEquipos.getInstance().menu();
     }
 }

@@ -216,7 +216,7 @@ public class ControladorArriendoEquipos {
     public String[] consultaArriendo (long codigo){
         Arriendo arriendo=buscaArriendo(codigo);
         String[]detallestoArriendo=new String[7];
-        Cliente cliente=arriendo.getCliente(),
+        Cliente cliente=arriendo.getCliente();
 
         if(arriendo==null){
         return new String [0];
@@ -325,7 +325,7 @@ public class ControladorArriendoEquipos {
     }
 
 
-    String[][] listaDetallesArriendo(long codArriendo){
+    public String[][] listaDetallesArriendo(long codArriendo){
         Arriendo arriendo = buscaArriendo(codArriendo);
         if (arriendo == null) {
             return new String[0][0];
