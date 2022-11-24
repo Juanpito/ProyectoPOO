@@ -1,11 +1,8 @@
 package Vista;
 import java.sql.SQLOutput;
-import java.util.ArrayList;
 import java.util.Scanner;
-import Controlador.ControladorArriendoEquipos;
-import Excepciones.ClienteExcepcion;
-import Excepciones.EquipoExcepcion;
-import Modelo.Cliente;
+import Controlador.*;
+import Modelo.*;
 public class UIArriendoEquipos {
     private static UIArriendoEquipos instancia = null;
     private final Scanner tcld;
@@ -24,8 +21,7 @@ public class UIArriendoEquipos {
 
     public void menu() {
         int opcion;
-        System.out.println("BIENVENIDO");
-        System.out.println("");
+
         do {
             System.out.println("*** MENU DE OPCIONES ***");
             System.out.println("1. Crear un nuevo cliente");
@@ -50,49 +46,50 @@ public class UIArriendoEquipos {
         tcld.close();
     }
 
-    private void creaCliente(ArrayList todosClientes) {
+    private void creaCliente() {
         String nombre, domicilio, rut, numerotelefono;
         System.out.print("Ingrese rut: ");
         rut = tcld.next();
+        if(validaRut(rut)==false){
+            System.out.println("Error. Rut no valido");
+            menu();
+        }
         System.out.print("Ingrese nombre: ");
         nombre = tcld.next();
+        if(validaNombre(nombre)==false){
+            System.out.println("Error. Nombre no valido");
+            menu();
+        }
         System.out.print("Ingrese domicilio ");
         domicilio = tcld.next();
+        if(validaNombre(domicilio)==false){
+            System.out.println("Error. Domicilio no valido");
+            menu();
+        }
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
-        while (numerotelefono.length()!=11) {
-            if (numerotelefono.length() != 11) {
-                System.out.println("Ingrese un numero de telefono correcto (11 digitos)");
-                numerotelefono = tcld.next();
-            }
+        if(validaNombre(numerotelefono)==false){
+            System.out.println("Error. numero no valido");
+            menu();
         }
-        try {
-            for (Object nuevo : todosClientes) {
-                if (nuevo != todosClientes){
-                    System.out.println("Cliente creado");
-                }else{
-                    throw new ClienteExcepcion("Ya existe un cliente con el rut dado");
-                }
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+        if(numerotelefono.length()!=11){
+            System.out.println("numero no valido");
+            menu();
+        }
+        System.out.println("");
+        if(ControladorArriendoEquipos.getInstance().buscaCliente(rut).equals(rut)){
+            System.out.println("el cliente ingresado ya existe");
+        }else{
+            ControladorArriendoEquipos.getInstance().creaCliente(rut, nombre, domicilio, numerotelefono);
+            System.out.println("Cliente creado exitosamente");
+        }
+        menu();
 
-        }
-        try {
-            for (Object nuevo : todosClientes) {
-                if (nuevo != todosClientes){
-                    System.out.println("Cliente creado");
-                }else{
-                    throw new ClienteExcepcion("El cliente ya esta registrado");
-                }
-            }
-        }catch (Exception e){
-            System.out.println("");
-        }
-        UIArriendoEquipos.getInstancia().creaCliente(rut, nombre, domicilio, numerotelefono);
+
+
     }
 
-    private void creaEquipo(ArrayList todosEquipos) {
+    private void creaEquipo() {
         String descripcion;
         int codigo, precio;
         System.out.print("Ingrese codigo: ");
@@ -101,23 +98,12 @@ public class UIArriendoEquipos {
         descripcion = tcld.next();
         System.out.print("Ingrese precio del arriendo por dia: ");
         precio = tcld.nextInt();
-        UIArriendoEquipos.getInstancia().creaEquipo(descripcion, codigo, precio);
+        ControladorArriendoEquipos.getInstance().creaEquipo(descripcion, codigo, precio);
         System.out.println("");
-        try {
-            for (Object nuevo : todosEquipos) {
-                if (nuevo != todosEquipos){
-                    System.out.println("Equipo creado");
-                }else{
-                    throw new EquipoExcepcion("Ya existe un equipo con el codigo dado");
-                }
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
     }
 
     private void listaClientes() {
-        String[][] datosClientes = UIArriendoEquipos.getInstancia().listaClientes();
+        String[][] datosClientes = ControladorArriendoEquipos.getInstance().listaClientes();
         System.out.println("\nLISTADO DE CLIENTES");
         System.out.println("------------");
         System.out.printf("%-25s%-25s%-25s%-25s%-25s%n", "RUT", "Nombre", "Direccion", "telefono","Estado");
@@ -132,14 +118,34 @@ public class UIArriendoEquipos {
     }
 
     private void listaEquipos() {
-        String[][] datosEquipos = UIArriendoEquipos.getInstancia().listaEquipos();
+        String[][] datosEquipos = ControladorArriendoEquipos.getInstance().listaEquipos();
         System.out.println("\nLISTADO DE EQUIPOS");
         System.out.println("------------");
-        System.out.printf("%-25s%-25s%-25s%-25s%n", "Codigo", "Descripcion", "Precio","Estado");
+        System.out.printf("%-25s%-25s%-25s%-25s%n", "Codigo", " Descripcion", "Precio","Estado");
         for (int i = 0; i < datosEquipos.length; i++) {
             System.out.printf("%-25s%-25s%-25s%-25s%n", datosEquipos[i][0], datosEquipos[i][1], datosEquipos[i][2],datosEquipos[i][3]);
         }
         System.out.println("");
     }
-    private void listaArriendos(){}
+    private void listaArriendos(){
+        String[][] datosArriendos = ControladorArriendoEquipos.getInstance().listaArriendos();
+        //falta colocar un perido que sea fecha inicio periodo, fecha fin periodo
+        System.out.println("\nLISTADO DE ARRIENDOS");
+        System.out.println("------------");
+        System.out.printf("%-25s%-25s%-25s%-25s%n", "Codigo", "Fecha inicio", "Fecha devol.","Estado","Rut cliente","Monto total");
+        for (int i = 0; i < datosArriendos.length; i++) {
+            System.out.printf("%-25s%-25s%-25s%-25s%n", datosArriendos[i][0], datosArriendos[i][1], datosArriendos[i][2],datosArriendos[i][3],datosArriendos[i][4],datosArriendos[i][5]);
+        }
+        System.out.println("");
+    }
+    private static boolean validaRut(String rut){
+return false; //es momentaneo,hay que cambiarlo
+    }
+    private static boolean validaNombre(String var){
+        for(int i =0; i<var.length(); i++)
+            if(var.charAt(i) != ' ')
+                return false;
+
+        return true;
+    }
 }
