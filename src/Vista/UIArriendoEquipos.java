@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Controlador.ControladorArriendoEquipos;
 import Excepciones.ClienteExcepcion;
+import Excepciones.EquipoExcepcion;
 import Modelo.Cliente;
 public class UIArriendoEquipos {
     private static UIArriendoEquipos instancia = null;
@@ -91,7 +92,7 @@ public class UIArriendoEquipos {
         UIArriendoEquipos.getInstancia().creaCliente(rut, nombre, domicilio, numerotelefono);
     }
 
-    private void creaEquipo() {
+    private void creaEquipo(ArrayList todosEquipos) {
         String descripcion;
         int codigo, precio;
         System.out.print("Ingrese codigo: ");
@@ -102,6 +103,17 @@ public class UIArriendoEquipos {
         precio = tcld.nextInt();
         UIArriendoEquipos.getInstancia().creaEquipo(descripcion, codigo, precio);
         System.out.println("");
+        try {
+            for (Object nuevo : todosEquipos) {
+                if (nuevo != todosEquipos){
+                    System.out.println("Equipo creado");
+                }else{
+                    throw new EquipoExcepcion("Ya existe un equipo con el codigo dado");
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private void listaClientes() {
