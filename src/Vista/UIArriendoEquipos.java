@@ -78,7 +78,7 @@ public class UIArriendoEquipos {
         }
         System.out.println("");
         if(ControladorArriendoEquipos.getInstance().buscaCliente(rut).equals(rut)){
-            System.out.println("el cliente ingresado ya existe");
+            throw new ClienteExcepcion("El cliente ya esta registrado");
         }else{
             ControladorArriendoEquipos.getInstance().creaCliente(rut, nombre, domicilio, numerotelefono);
             System.out.println("Cliente creado exitosamente");
@@ -98,8 +98,15 @@ public class UIArriendoEquipos {
         descripcion = tcld.next();
         System.out.print("Ingrese precio del arriendo por dia: ");
         precio = tcld.nextInt();
+        if(ControladorArriendoEquipos.getInstance().getCodigo!= codigo){
         ControladorArriendoEquipos.getInstance().creaEquipo(descripcion, codigo, precio);
+        System.out.print("Equipo creado exitosamente");
+        }else{
+        throw new EquipoExcepcion("Ya existe un equipo con el codigo dado");
+        }
         System.out.println("");
+        
+        menu();
     }
 
     private void listaClientes() {
