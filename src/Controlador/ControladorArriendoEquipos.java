@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 package Controlador;
 
-import Modelo.Cliente;
-import Modelo.Equipo;
-
+import Modelo.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import Excepciones.*;
+import Vista.*;
 
 public class ControladorArriendoEquipos {
 
@@ -40,11 +39,12 @@ public class ControladorArriendoEquipos {
         todosEquipos.add(new Equipo(cod, desc, precio));
     }
 
-    public long creaArriendo (String rutCliente){
-        long posicion=todosArriendos.size()+1;
+    public long creaArriendo (long cod, LocalDate fecha, Cliente cliente){
+        long posicion=todosArriendos.size()+1;//
         LocalDate hoy=LocalDate.now();
-        Cliente EncuentraCliente = buscaCliente(rutCliente);
-        todosArriendos.add(new Arriendo(posicion, hoy));
+        encuentraCliente() = cliente.getRut();//y esto que hace?
+        todosArriendos.add(new Arriendo(cod, hoy, cliente));
+
         return posicion;
 
     }
@@ -52,10 +52,9 @@ public class ControladorArriendoEquipos {
     public String agregaEquipoToArriendo(long codArriendo, long codEquipo){
         Arriendo arriendo = buscaArriendo(codArriendo);
         Equipo equipo = buscaEquipo(codEquipo);
-
         todosArriendos.get((int)codArriendo).addDetalleArriendo(equipo);
         return equipo.getDescripcion();
-    }
+    }//por favor revisar este bloque↑
 
     public long cierraArriendo (long codArriendo){
         Arriendo arriendo = buscaArriendo(codArriendo);
@@ -69,12 +68,11 @@ public class ControladorArriendoEquipos {
 
 
         for(Equipo equipo : arriendo.getEquipos()){
-            for(int i = 0; i < equipos.size() && flag; i++){
-                if(equipo.getCodigo() == equipos.get(i).getCodigo()){
-                    equipos.get(i).setEstado(estadoEquipos[contador]);
-                    return true;
+                if(equipo.getCodigo() == equipo.getCodigo()){
+                    equipo.setEstado(estadoEquipos[contador]);
+
                 }
-            }
+
 
             contador++;
         }
@@ -83,7 +81,7 @@ public class ControladorArriendoEquipos {
     public void cambiaEstadoCliente(String rutCliente){
         Cliente cliente = buscaCliente(rutCliente);
         if (cliente == null) {
-            throw new ClienteException("Error: el rut no se asocia con ningun cliente");
+            throw (ClienteException e)("Error: el rut no se asocia con ningun cliente");
         }
         if (cliente.isActivo()) {
             cliente.setInactivo();
@@ -96,64 +94,75 @@ public class ControladorArriendoEquipos {
     public String[] consultaCliente(String rut){
         String clienteRut[];
 
-        if(null){
-            return cliente[0];
-        }
 
-        for (Cliente cliente : clientesArr){
-            if(rut.equals(cliente.getRut)){
-                clienteRut[0]=cliente.getRut;
-                clienteRut[1]=cliente.getRut;
-                clienteRut[2]=cliente.getRut;
-                clienteRut[3]=cliente.getRut;
-                clienteRut[4]=cliente.getRut;
-                return clienteRut[];
+        if(todosClientes ==  null){
+            clienteRut=new String[0];
+            return clienteRut;
+        }
+        clienteRut=new String[todosClientes.size()];
+        for (Cliente cliente : todosClientes){
+            if(rut.equals(cliente.getRut())){
+                clienteRut[0]=cliente.getRut();
+                clienteRut[1]=cliente.getRut();
+                clienteRut[2]=cliente.getRut();
+                clienteRut[3]=cliente.getRut();
+                clienteRut[4]=cliente.getRut();
+
             }
         }
+        return clienteRut;
     }
 
     public String[] consultaEquipo(long codigo){
-        long equipoCodigo[];
+        String[] equipoCodigo;
 
-        if(null){
-            return equipo[0];
+        if(todosEquipos== null){
+            equipoCodigo=new String[0];
+            return equipoCodigo;
         }
+        equipoCodigo=new String[todosEquipos.size()];
+        for (Equipo equipo : todosEquipos){
+            if(codigo==(equipo.getCodigo())){
+                equipoCodigo[0]= String.valueOf(equipo.getCodigo());
+                equipoCodigo[1]= String.valueOf(equipo.getCodigo());
+                equipoCodigo[2]= String.valueOf(equipo.getCodigo());
+                equipoCodigo[3]= String.valueOf(equipo.getCodigo());
+                equipoCodigo[4]= String.valueOf(equipo.getCodigo());
 
-        for (Equipo equipo : equiposArr){
-            if(codigo.equals(equipo.getCodigo)){
-                equipoCodigo[0]=equipo.getCodigo;
-                equipoCodigo[1]=equipo.getCodigo;
-                equipoCodigo[2]=equipo.getCodigo;
-                equipoCodigo[3]=equipo.getCodigo;
-                equipoCodigo[4]=equipo.getCodigo;
-                return equipoCodigo[];
             }
         }
-
+        return equipoCodigo;
     }
 
     public String[] consultaArriendo (long codigo){
 
-        if(null){
-            return arriendo[0];
+        String equipoArriendo[];
+        if (todosArriendos ==null){
+            equipoArriendo =new String[0];
+            return equipoArriendo ;
         }
-        long equipoArriendo[];
+       equipoArriendo =new String[todosArriendos.size()];
 
-        for (Equipo equipo : equiposArr){
-            if(codigo.equals(equipo.getCodigo)){
-                equipoCodigo[0]=equipo.getCodigo;
-                equipoCodigo[1]=equipo.getCodigo;
-                equipoCodigo[2]=equipo.getCodigo;
-                equipoCodigo[3]=equipo.getCodigo;
-                equipoCodigo[4]=equipo.getCodigo;
-                return equipoCodigo[];
+        for (Arriendo arriendo : todosArriendos){
+            if(codigo==(arriendo.getCodigo())){
+                equipoArriendo[0]= String.valueOf(arriendo.getCodigo());
+                equipoArriendo[1]= String.valueOf(arriendo.getCodigo());
+                equipoArriendo[2]= String.valueOf(arriendo.getCodigo());
+                equipoArriendo[3]= String.valueOf(arriendo.getCodigo());
+                equipoArriendo[4]= String.valueOf(arriendo.getCodigo());
+
             }
         }
+        return equipoArriendo;
     }
 
 
     public String[][] listaClientes() {
         String clientesArr[][] = new String[todosClientes.size()][5];
+        if(todosClientes==null){
+            return clientesArr;
+        }
+
         int i = 0;
         for (Cliente cliente : todosClientes) {
             clientesArr[i][0] = cliente.getRut();
@@ -167,15 +176,22 @@ public class ControladorArriendoEquipos {
     }
 
     public String[][] listaArriendos(){
-        String arriendosArr[][] = new String[todosEquipos.size()][4];
+        if(this.todosArriendos==null){}
+        String arriendosArr[][] = new String[todosArriendos.size()][5];
         int i=0;
         for (Arriendo arriendo : todosArriendos){
-            arriendosArr[i][0] = unArriendo();
+            arriendosArr[i][0] = String.valueOf(arriendo.getCodigo());
+            arriendosArr[i][1] = String.valueOf(arriendo.getFechaInicio());
+            arriendosArr[i][2] = String.valueOf(arriendo.getFechaDevolucion());
+            arriendosArr[i][3] = String.valueOf(arriendo.getEstado());
+            arriendosArr[i][4] = arriendo.getCliente().getRut();
+            arriendosArr[i][5] = String.valueOf(arriendo.getMontoTotal());
             i++;
         }
+        return arriendosArr;
     }
 
-    String[][] listaDetallesArriendo(long codArriendo){
+    public String[][] listaDetallesArriendo(long codArriendo){
         Arriendo arriendo = buscaArriendo(codArriendo);
         if (arriendo == null) {
             return new String[0][0];
@@ -184,7 +200,7 @@ public class ControladorArriendoEquipos {
 
     }
 
-    private Cliente buscaCliente(String rut){
+    public Cliente buscaCliente(String rut){
         for (Cliente cliente:todosClientes){
             if(cliente.getRut().equals(rut)){
                 return cliente;
@@ -193,9 +209,9 @@ public class ControladorArriendoEquipos {
         return null;
     }
 
-    private Equipo buscaEquipo(long codigo){
+    public Equipo buscaEquipo(long codigo){
         for (Equipo equipo:todosEquipos){
-            if(equipo.getCodigo().equals(codigo)){
+            if(equipo.getCodigo()==(codigo)){
                 return equipo;
             }
         }
@@ -203,8 +219,8 @@ public class ControladorArriendoEquipos {
     }
 
     private Arriendo buscaArriendo (long codigo){
-        for (Arriendo Arriendo:todosArriendos){
-            if(arriendo.getCodigo().equals(codigo)){
+        for (Arriendo arriendo:todosArriendos){
+            if(arriendo.getCodigo()==((int)codigo)){
                 return arriendo;
             }
         }
