@@ -1,7 +1,9 @@
 package Vista;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Scanner;
 import Controlador.ControladorArriendoEquipos;
+import Excepciones.ClienteExcepcion;
 import Modelo.Cliente;
 public class UIArriendoEquipos {
     private static UIArriendoEquipos instancia = null;
@@ -47,7 +49,7 @@ public class UIArriendoEquipos {
         tcld.close();
     }
 
-    private void creaCliente() {
+    private void creaCliente(ArrayList todosClientes) {
         String nombre, domicilio, rut, numerotelefono;
         System.out.print("Ingrese rut: ");
         rut = tcld.next();
@@ -57,7 +59,24 @@ public class UIArriendoEquipos {
         domicilio = tcld.next();
         System.out.print("Ingrese numero del telefono (11 digitos)");
         numerotelefono = tcld.next();
-        System.out.println("");
+        while (numerotelefono.length()!=11) {
+            if (numerotelefono.length() != 11) {
+                System.out.println("Ingrese un numero de telefono correcto (11 digitos)");
+                numerotelefono = tcld.next();
+            }
+        }
+        try {
+            for (Object nuevo : todosClientes) {
+                if (nuevo != todosClientes){
+                    System.out.println("Cliente creado");
+                }else{
+                    throw new ClienteExcepcion("Ya existe un cliente con el rut dado");
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+
+        }
         try {
             for (Object nuevo : todosClientes) {
                 if (nuevo != todosClientes){
@@ -67,7 +86,7 @@ public class UIArriendoEquipos {
                 }
             }
         }catch (Exception e){
-
+            System.out.println("");
         }
         UIArriendoEquipos.getInstancia().creaCliente(rut, nombre, domicilio, numerotelefono);
     }
