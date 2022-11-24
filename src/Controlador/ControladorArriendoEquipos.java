@@ -42,7 +42,6 @@ public class ControladorArriendoEquipos {
     public long creaArriendo (long cod, LocalDate fecha, Cliente cliente){
         long posicion=todosArriendos.size()+1;//
         LocalDate hoy=LocalDate.now();
-        encuentraCliente() = cliente.getRut();//y esto que hace?
         todosArriendos.add(new Arriendo(cod, hoy, cliente));
 
         return posicion;
@@ -81,7 +80,7 @@ public class ControladorArriendoEquipos {
     public void cambiaEstadoCliente(String rutCliente){
         Cliente cliente = buscaCliente(rutCliente);
         if (cliente == null) {
-            throw (ClienteException e)("Error: el rut no se asocia con ningun cliente");
+         
         }
         if (cliente.isActivo()) {
             cliente.setInactivo();
