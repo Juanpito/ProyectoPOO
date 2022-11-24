@@ -146,7 +146,7 @@ public class UIArriendoEquipos {
         System.out.println("");
     }
     private static boolean validaRut(String rut){
-return false; //es momentaneo,hay que cambiarlo
+return true; //no fui capaz de encontrar un metodo, solo clases
     }
     private static boolean validaNombre(String var){
         for(int i =0; i<var.length(); i++)
