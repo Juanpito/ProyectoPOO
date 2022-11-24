@@ -83,7 +83,7 @@ public class UIArriendoEquipos {
                 if (nuevo != todosClientes){
                     System.out.println("Cliente creado");
                 }else{
-                    throw new Exception.Excepciones("El cliente ya esta registrado");
+                    throw new ClienteExcepcion("El cliente ya esta registrado");
                 }
             }
         }catch (Exception e){
