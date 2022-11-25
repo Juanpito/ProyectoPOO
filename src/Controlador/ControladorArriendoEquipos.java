@@ -63,7 +63,7 @@ public class ControladorArriendoEquipos {
             }
         }
 
-        long posicion=todosArriendos.size();
+        long posicion=todosArriendos.size()+1;//le sumo uno para que la creacion del equipo sea con codigo 1 y no 0, segun mi parecer un codigo no puede ser 0
         todosArriendos.add(new Arriendo(posicion,LocalDate.now(),encuentraCliente));
         return posicion;//se llama posicion el codigo, porque es la ultima posicion que ocupa en mi coleccion
 
@@ -217,20 +217,27 @@ public class ControladorArriendoEquipos {
         Arriendo arriendo=buscaArriendo(codigo);
         String[]detallestoArriendo=new String[7];
         Cliente cliente=arriendo.getCliente();
+        LocalDate fechaArriendo = arriendo.getFechaDevolucion();
         if(arriendo==null){
         return new String [0];
         }
-        LocalDate fechaArriendo=arriendo.getFechaDevolucion();
-        fechaArriendo.format(DateTimeFormatter.ofPattern("dd/MM/yyy"));
+        try {
 
+            fechaArriendo.format(DateTimeFormatter.ofPattern("dd/MM/yyy"));
+        }catch(Exception e){
+            System.out.println("no existe la fecha indicada");
+        }
 
         detallestoArriendo[0]=(Integer.toString(arriendo.getCodigo()));
         detallestoArriendo[1]= String.valueOf((fechaArriendo));
 
         LocalDate fechaDevolucion=arriendo.getFechaDevolucion();
-        fechaDevolucion.format(DateTimeFormatter.ofPattern("dd/MM/yy"));
-        if(fechaDevolucion==null){
-            detallestoArriendo[2]="no devuelto";
+        try {
+            fechaDevolucion.format(DateTimeFormatter.ofPattern("dd/MM/yy"));
+        }catch(Exception e){
+            System.out.println("no existe la fecha indicada");
+        }
+        if(fechaDevolucion==null){            detallestoArriendo[2]="no devuelto";
         }else{
             detallestoArriendo[2]= String.valueOf(fechaDevolucion);
         }

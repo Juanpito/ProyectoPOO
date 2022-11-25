@@ -46,8 +46,13 @@ public class Equipo {
 
     //en este caso para saber si un equipo es arrendado o no, necesitasmos saberlo desde la clase arriendo, por tanto usamos DetalleArriendo como puente (entregado o no) para obtener la informacion
     public boolean isArrendado(){
+        if (detalleArriendos.isEmpty()){
+            return false;
+        }
+
+
         for (DetalleArriendo detalle:detalleArriendos){
-            if (detalle.getArriendo().getEstado()== EstadoArriendo.ENTREGADO){
+            if (detalleArriendos.get(detalleArriendos.size()-1).getArriendo().getEstado()==EstadoArriendo.ENTREGADO){
                 return true;
             }
 
