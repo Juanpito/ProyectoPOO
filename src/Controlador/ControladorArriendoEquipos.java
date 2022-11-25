@@ -18,6 +18,7 @@ public class ControladorArriendoEquipos {
 
 
 
+
     private long codArriendo;
     private ControladorArriendoEquipos() {
         todosEquipos = new ArrayList<>();

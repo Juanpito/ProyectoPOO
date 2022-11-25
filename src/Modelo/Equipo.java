@@ -9,6 +9,7 @@ public class Equipo {
     private EstadoEquipo estado;
     ArrayList<DetalleArriendo>detalleArriendos;
 
+
     public Equipo(long codigo, String descripcion, long precioArriendoDia) {
         this.codigo = codigo;
         this.descripcion = descripcion;
