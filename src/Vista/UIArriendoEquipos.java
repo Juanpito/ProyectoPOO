@@ -411,8 +411,7 @@ public class UIArriendoEquipos {
         }
 
 
-    // De acuerdo con la guia del avance se pueden agregar metodos privados para simplificar el codigo
-    //      "Solo se permite agregar métodos privados, si ello lleva a una mejora del código o se logra mayor simplicidad o legibilidad"
+
     private Scanner getTcld() {
         Scanner tcld = new Scanner(System.in);
         tcld.useDelimiter("\t|\r\n|[\n\r\u2028\u2029\u0085]");
@@ -423,13 +422,9 @@ public class UIArriendoEquipos {
         if (rut.equals("")) {
             return false;
         }
-        // Para validar el rut se toman todos lso digitos (sin el digito verificador)
-        // cada digito de multiplica (en orden inverso) con uno de los siguente numero [2,3,4,5,6,7]
-        // luego se suma y se calcula el modulo 11 de lo anterior, el resultado es el digito verificador
-        // si el digito verficador
-        // (Nota: si el resultado es 10 se remplaza el numero con un K)
 
-        // Eliminar . y -
+
+
         rut = rut.replace(".", "");
         rut = rut.replace("-", "");
         String rutSinDigito = rut.substring(0, rut.length()-1);

@@ -63,7 +63,7 @@ public class ControladorArriendoEquipos {
             }
         }
 
-        long posicion=todosArriendos.size()+1;//le sumo uno para que la creacion del equipo sea con codigo 1 y no 0, segun mi parecer un codigo no puede ser 0
+        long posicion=todosArriendos.size();
         todosArriendos.add(new Arriendo(posicion,LocalDate.now(),encuentraCliente));
         return posicion;//se llama posicion el codigo, porque es la ultima posicion que ocupa en mi coleccion
 
@@ -133,6 +133,7 @@ public class ControladorArriendoEquipos {
 
             i++;
         }
+
 
         todosArriendos.get((int) codArriendo).setEstado(EstadoArriendo.DEVUELTO);
         todosArriendos.get((int) codArriendo).setFechaDevolucion(LocalDate.now());
@@ -305,13 +306,14 @@ public class ControladorArriendoEquipos {
 
     public String [][]listaArriendosPorDevolver(String rutCliente) throws ClienteException {//este metodo
         Cliente cliente = buscaCliente(rutCliente);
+        if(cliente == null){
+            throw new ClienteException("No existe un cliente con el rut dado");
+        }
+
         Arriendo[] arriendosPorDev = cliente.getArriendosPorDevolver();
         String[][] listaArriendos = new String[arriendosPorDev.length][7];
         String[] detalleArriendo;
 
-        if(cliente == null){
-            throw new ClienteException("No existe un cliente con el rut dado");
-        }
 
 
         for(int i = 0; i < arriendosPorDev.length; i++){
@@ -391,4 +393,8 @@ public class ControladorArriendoEquipos {
         }
         return equipoArr;
     }
+
+
+
+
 } //fin de la clase
