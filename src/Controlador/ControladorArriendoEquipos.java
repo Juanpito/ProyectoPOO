@@ -217,7 +217,6 @@ public class ControladorArriendoEquipos {
         Arriendo arriendo=buscaArriendo(codigo);
         String[]detallestoArriendo=new String[7];
         Cliente cliente=arriendo.getCliente();
-
         if(arriendo==null){
         return new String [0];
         }

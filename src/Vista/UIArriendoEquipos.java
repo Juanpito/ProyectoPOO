@@ -377,14 +377,15 @@ public class UIArriendoEquipos {
         ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();
         System.out.println("Codigo arriendo: ");
 
-        // Check if valid
-        long codigoArriendo = tcld.nextLong();
-        String[] datosArriendo = controlador.consultaArriendo(codigoArriendo);
+        try {
+            long codigoArriendo = tcld.nextLong();
+            String[] datosArriendo = controlador.consultaArriendo(codigoArriendo);
 
         if(datosArriendo.length == 0){
             System.out.println("No existe un arriendo con el codigo dado ");
             return;
         }
+
 
         String[][] detallesArriendo = controlador.listaDetallesArriendo(codigoArriendo);
 
@@ -403,7 +404,10 @@ public class UIArriendoEquipos {
         for (String[] detalle: detallesArriendo) {
             System.out.printf("%-13s %-19s %-24s%n", detalle[0], detalle[1], detalle[2]);
         }
-    }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        }
 
     // De acuerdo con la guia del avance se pueden agregar metodos privados para simplificar el codigo
     //      "Solo se permite agregar métodos privados, si ello lleva a una mejora del código o se logra mayor simplicidad o legibilidad"
