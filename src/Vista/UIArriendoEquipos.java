@@ -50,9 +50,8 @@ public class UIArriendoEquipos {
             System.out.println("9.  Lista detalles de un arriendo");
             System.out.println("10. Salir");
             System.out.print("\tIngrese opcion: ");
-            try {
                 opcion = tcld.nextInt();
-                // Solo puede exitir un Scanner por lo que el Scanner se debe cerrar al llamar otro metetodo que lo usa
+
                 switch (opcion){
                     case 1 -> creaCliente();
                     case 2 -> creaEquipo();
@@ -63,16 +62,13 @@ public class UIArriendoEquipos {
                     case 7 -> listaEquipos();
                     case 8 -> listaArriendos();
                     case 9 -> listaDetallesArriendo();
-                    case 10 -> {
-                        return;
-                    }
+
 
                     default -> System.out.println("***Opcion invalida intentelo de nuevo***");
                 }
-            } catch (Exception e) {
-                System.out.println("Opcion debe ser un numero!");
+
             }
-        }while(true);
+        while(true);
 
     }
 
@@ -121,6 +117,7 @@ public class UIArriendoEquipos {
         }
     }
 
+
     private void creaEquipo(){
         System.out.println("Creando un nuevo equipo...");
         ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();
@@ -156,13 +153,18 @@ public class UIArriendoEquipos {
         }
 
         try {
-            controlador.creaEquipo(cod, Long.parseLong(descripcion), precioArriendoDia);
+            controlador.creaEquipo(cod, descripcion, precioArriendoDia);
             System.out.println("Equipo creado exitosamente");
         } catch (EquipoException e) {
             System.out.println(e.getMessage());
         }
 
     }
+
+
+
+
+
     private void arriendaEquipos() {
         System.out.println("Arrendando equipos...");
         ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();

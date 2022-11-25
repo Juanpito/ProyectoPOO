@@ -6,7 +6,6 @@ import Excepciones.EquipoException;
 import Modelo.*;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -43,15 +42,15 @@ public class ControladorArriendoEquipos {
         todosClientes.add(new Cliente(nom, rut, dir, tel));
     }
 
-    public void creaEquipo (String desc,long cod, long precio) throws EquipoException {
-        if(buscaEquipo(cod)!=null) {
-            throw new EquipoException("Ya existe un equipo con el codigo ingresado");
+    public void creaEquipo (String cod, String desc, long precio) throws EquipoException {
+        //si existe un equipo con el mismo codigo, arroja una excepcion
+        if(buscaEquipo(Long.parseLong(cod)) != null){
+            throw new EquipoException("Ya existe un equipo con el código dado");
         }
 
-
-        todosEquipos.add(new Equipo(cod, desc, precio));
-
+        todosEquipos.add(new Equipo(Long.parseLong(cod), desc, precio));
     }
+
 
     public long creaArriendo (String rutCliente) throws ClienteException {
         Cliente encuentraCliente = buscaCliente(rutCliente);
