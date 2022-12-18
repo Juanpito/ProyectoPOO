@@ -2,20 +2,24 @@ package Modelo;
 
 import java.util.ArrayList;
 
-public class Equipo {
+public abstract class Equipo {
     private long codigo;
     private String descripcion;
-    private long precioArriendoDia;
+
     private EstadoEquipo estado;
-    ArrayList<DetalleArriendo>detalleArriendos;
+    private ArrayList<DetalleArriendo>detalleArriendos;
+    private ArrayList<Conjunto>conjuntos;
+    private ArrayList<Equipo>equipos;
 
 
-    public Equipo(long codigo, String descripcion, long precioArriendoDia) {
+    public Equipo(long codigo, String descripcion) {
         this.codigo = codigo;
         this.descripcion = descripcion;
-        this.precioArriendoDia = precioArriendoDia;
         this.estado=EstadoEquipo.OPERATIVO;
-        detalleArriendos=new ArrayList<>();
+        this.detalleArriendos=new ArrayList<>();
+        this.equipos=new ArrayList<>();
+        this.conjuntos=new ArrayList<>();
+
     }
 
     public long getCodigo() {
@@ -26,9 +30,7 @@ public class Equipo {
         return descripcion;
     }
 
-    public long getPrecioArriendoDia() {
-        return precioArriendoDia;
-    }
+
 
 
     public EstadoEquipo getEstado() {
@@ -63,6 +65,14 @@ public class Equipo {
 
 
     }
+
+
+    public abstract long getPrecioArriendoDia();
+    public void addEquipo (Equipo equipo){}
+    public int getNroEquipos(){
+        return 0;
+    }
+
 
 
 

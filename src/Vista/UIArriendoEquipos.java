@@ -350,10 +350,10 @@ public class UIArriendoEquipos {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fechaInicio, fechaFin;
         try {
-            System.out.println("Fecha inicio periodo (dd/mm/aaaa): ");
+            System.out.println("Fecha inicio periodo (dd/MM/yyyy): ");
             inicio = sc.next();
             fechaInicio= LocalDate.parse(inicio, formatter);
-            System.out.println("Fecha fin periodo (dd/mm/aaaa): ");
+            System.out.println("Fecha fin periodo (dd/MM/yyyy): ");
             fin = sc.next();
             fechaFin= LocalDate.parse(fin, formatter);
         } catch (Exception e) {

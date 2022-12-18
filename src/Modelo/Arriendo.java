@@ -3,6 +3,7 @@ package Modelo;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,6 +15,9 @@ public class Arriendo {
     ArrayList<DetalleArriendo>detalleArriendos;
     Cliente cliente;
 
+    ArrayList<Pago>pagos;
+
+
 
     public Arriendo(long codigo, LocalDate fechaInicio,Cliente cliente) {
         this.codigo = codigo;
@@ -23,7 +27,7 @@ public class Arriendo {
         this.estado=EstadoArriendo.INICIADO;
         this.detalleArriendos=new ArrayList<>();
         fechaDevolucion=null;//aqui es null porque como sabemos es un atributo que aun no existe sino hasta cuando se devuelva
-
+        this.pagos=new ArrayList<>();
     }
 
     public int getCodigo(){
@@ -96,12 +100,13 @@ public class Arriendo {
         }
 
 
-
-        String[][] detallesStr = new String[detalleArriendos.size()][3];
+        Equipo equipo;
+        String[][] detallesStr = new String[detalleArriendos.size()][4];
         int i = 0;
         for (DetalleArriendo detalle : detalleArriendos) {
+                equipo=detalle.getEquipo();
                 detallesStr[i][0] = String.valueOf(detalle.getEquipo().getCodigo());
-                detallesStr[i][1] = detalle.getEquipo().getDescripcion();
+                detallesStr[i][1] = equipo.getDescripcion();
                 detallesStr[i][2] = String.valueOf(detalle.getPrecioAplicado());
                 i++;
         }
@@ -129,6 +134,60 @@ public class Arriendo {
 
 
     }
+
+
+    public void addPagoContado(Contado pago){
+        pagos.add((Pago)pago);//aqui hago un casting porque se supone que para añadir debe ser un objeto del mismo
+
+    }
+
+    public void addPagoDebito(Debito pago){
+        pagos.add((Pago)pago);
+    }
+
+    public void addPagoCredito(Credito pago){
+        pagos.add((Pago)pago);
+
+    }
+
+    public long getMontoPagado(){
+        if(pagos.isEmpty()){
+            return 0;   //esto es lo que dice el documento
+        }
+        long cont=0;
+
+        for(Pago pago:pagos){
+            cont+=pago.getMonto();
+        }
+        return cont;
+
+
+    }
+
+    public long getSaldoAdeudado(){
+        return getMontoTotal() - getMontoPagado();
+    }
+
+    public String[][]getPagosToString(){
+        if (pagos.isEmpty()) {
+            return new String[0][0];
+        }
+
+        String[][] resultado = new String[pagos.size()][3];
+        for (int i=0; i<pagos.size(); i++) {
+            Pago pago = pagos.get(i);
+            resultado[i][0] = pago.getMonto() + "";
+            resultado[i][1] = pago.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            resultado[i][2] = pago.getClass() + "";//este es el tipo de pago, con el getClass
+
+        }
+        return resultado;
+
+    }
+
+
+
+
 
 
 
