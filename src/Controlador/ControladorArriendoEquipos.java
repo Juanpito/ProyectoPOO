@@ -169,7 +169,7 @@ public class ControladorArriendoEquipos{
 
     }
 
-    public void pagaArriendoContado(long codArriendo, long monto) throws ArriendoException {//nuevo metodo
+    public void PagaArriendoContado(long codArriendo, long monto) throws ArriendoException {//nuevo metodo
         Arriendo arriendo = buscaArriendo(codArriendo);
 
         if(arriendo == null){
