@@ -10,19 +10,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-//Test y fixes Gonzalo Inostroza y Fabian Bravo
-
-//Parte de Luis Riquelme
 public class UIArriendoEquipos {
     private static UIArriendoEquipos instance=null;
-
-    // Crear el escaner como atributo simplificaria mucho más el codigo pero no se puede
-    // debido a que no esta especificado en el diagrama de clases
-    // private Scanner tlcd;
-
     private UIArriendoEquipos(){
-        // En caso de poner el Scanner como atributo se debiería inicializar en el constructor
-        // tcld = new Scanner(System.in).useDelimiter("\t|\r\n|[\n\r\u2028\u2029\u0085]");
     }
 
     public static UIArriendoEquipos getInstance() {
@@ -44,10 +34,10 @@ public class UIArriendoEquipos {
             System.out.println("3.  Arrienda equipos");
             System.out.println("4.  Devuelve equipos");
             System.out.println("5.  Cambia estado de un cliente");
-            System.out.println("6.  Lista todos los clientes");
-            System.out.println("7.  Lista todos los equipos");
-            System.out.println("8.  Lista todos los arriendos");
-            System.out.println("9.  Lista detalles de un arriendo");
+            System.out.println("6.  Paga arriendo");
+            System.out.println("7.  Genera reportes");
+            System.out.println("8.  cargar los datos del archivo");
+            System.out.println("9.  Guardar los datos del archivo");
             System.out.println("10. Salir");
             System.out.print("\tIngrese opcion: ");
                 opcion = tcld.nextInt();
@@ -58,10 +48,11 @@ public class UIArriendoEquipos {
                     case 3 -> arriendaEquipos();
                     case 4 -> devuelveEquipos();
                     case 5 -> cambiaEstadoCliente();
-                    case 6 -> listaClientes();
-                    case 7 -> listaEquipos();
+                    case 6 -> pagaArriendo();
+                    case 7 -> generaReportes();
                     case 8 -> listaArriendos();
                     case 9 -> listaDetallesArriendo();
+                    case 10->{}
 
 
                     default -> System.out.println("***Opcion invalida intentelo de nuevo***");
@@ -72,9 +63,43 @@ public class UIArriendoEquipos {
 
     }
 
+    private void generaReportes(){
+        int opcion;
+        do {
+            Scanner tcld = getTcld();
+            System.out.println("*** MENU DE REPORTES ***\n");
+            System.out.println("1.  Lista todos los clientes");
+            System.out.println("2.  Lista todos los equipos");
+            System.out.println("3.  Lista todos los arriendos");
+            System.out.println("4.  Lista detalles de un arriendo");
+            System.out.println("5.  Lista arriendos con pagos");
+            System.out.println("6.  Lista los pagos de un arriendo");
+            System.out.println("7.  Salir");
+            System.out.print("\tIngrese opcion: ");
+
+            try {
+                opcion = tcld.nextInt();
+                switch (opcion){
+                    case 1 -> listaClientes();
+                    case 2 -> listaEquipos();
+                    case 3 -> listaArriendos();
+                    case 4 -> listaDetallesArriendo();
+                    case 5 -> listaArriendospagados();
+                    case 6 -> listaPagosDeUnArriendo();
+                    case 7 -> {
+                        return;
+                    }
+                    default -> System.out.println("***Opcion invalida intentelo de nuevo***");
+                }
+            }catch (Exception e){
+                System.out.println("Opcion debe ser un numero!");
+            }
+
+        }while(true);
+    }
+
+
     private void creaCliente(){
-        // Sigue preguntando datos incluso si el cliente ya existe
-        // al final muestra el mensaje de error, pero no estos seguro si es la intencion de la pauta TODO
         Scanner tcld = getTcld();
         String rut,nom, dir, tel;
 
@@ -118,7 +143,9 @@ public class UIArriendoEquipos {
     }
 
 
-    private void creaEquipo(){
+    private void creaEquipo(){// entendiendo que ya no existe el creaEquipo, se entiende a que hace referencia al implemento
+        String [] equipos;
+        int cantidad;
         System.out.println("Creando un nuevo equipo...");
         ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();
         Scanner tcld = getTcld();
@@ -143,23 +170,65 @@ public class UIArriendoEquipos {
             return;
         }
 
-        System.out.print("Precio arriendo por dia: ");
-        long precioArriendoDia;
+        System.out.print("\tPrecio arriendo por dia");
+        long precio;
         try {
-            precioArriendoDia = tcld.nextLong();
-        } catch (Exception e) {
+            precio = getTcld().nextLong();
+
+        }catch(Exception e){
             System.out.println("El valor debe ser numerico");
             return;
         }
 
-        try {
-            controlador.creaEquipo(cod, descripcion, precioArriendoDia);
-            System.out.println("Equipo creado exitosamente");
-        } catch (EquipoException e) {
-            System.out.println(e.getMessage());
+        System.out.print("Tipo equipo (1: Implemento, 2:Conjunto");
+        int tipoEquipo;
+        try{
+            tipoEquipo = tcld.nextInt();
+        }catch (Exception e){
+            System.out.println("El valor debe ser numerico");
+            return;
+        }
+        if(tipoEquipo==2){
+            System.out.print("\tNumero de equipos componentes:");
+
+            try{
+                cantidad= tcld.nextInt();
+                equipos=new String[cantidad];
+            }catch (Exception e){
+                System.out.println("El valor debe ser numerico");
+                return;
+            }
+
+
+
+            int cont=0;
+
+            do{
+                cont=cont+1;
+                System.out.print("\tcodigo de equipo "+cont+" de "+cantidad+":");
+                try{
+                    String comp=getTcld().next();
+                    equipos[cont-1]=comp;
+
+                }catch (Exception e){
+                    System.out.println("El valor debe ser numerico");
+                    return;
+                }
+            }while(cont!=cantidad);
+
+            for(int i=0;i<equipos.length;i++){
+                try {
+                    ControladorArriendoEquipos.getInstance().creaImplemento(Long.parseLong(equipos[i]),descripcion,precio);
+                } catch (EquipoException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
+
+
     }
+
 
 
 
@@ -266,11 +335,8 @@ public class UIArriendoEquipos {
                 System.out.println("El arriendo especificado no existe o no pertenece a este cliente");
                 return;
             }
-            // No es necesario verificar que arriendo sea un numero ya que sabemos que los codigo de los arriendo
-            // mostrados son correctos y en caso de que no este presente ya se devuelve al menu
+
             String[][] listaDetalles = ControladorArriendoEquipos.getInstance().listaDetallesArriendo(Long.parseLong(arriendo));
-            // No tiene mucho sentido que esto diga "Ingrese codigo y estado..." pero eso dice la pauta
-            // es mas probable que sea ingrese codigo de estado, de todas maneras lo marco como TODO
             System.out.println("Ingrese codigo y estado en que se devuelve cada equipo que se indica >>>");
             EstadoEquipo[] estadoEquipos = new EstadoEquipo[listaDetalles.length];
             for (int i = 0; i < listaDetalles.length; i++) {
@@ -302,9 +368,78 @@ public class UIArriendoEquipos {
             System.out.println(e.getMessage());
         }
     }
+
+
+    private void pagaArriendo() {//nuevo metodo
+        ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();
+        Scanner tcld = getTcld();
+        System.out.println("Pagando de arriendo...");
+        System.out.print("Codigo arriendo a pagar: ");
+        long codigo =tcld.nextLong();
+
+        String[] datosArriendo = controlador.consultaArriendoAPagar(codigo);
+        if (datosArriendo.length == 0) {
+            System.out.println("El arriendo indicado no existe o no esta devuelto");
+            return;
+        }
+
+        System.out.println("----- ANTECEDENTES DEL ARRIENDO -----");
+        System.out.println("Codigo: " + datosArriendo[0]);
+        System.out.println("Estado: " + datosArriendo[1]);
+        System.out.println("Rut cliente: " + datosArriendo[2]);
+        System.out.println("Nombre cliente: " + datosArriendo[3]);
+        System.out.println("Monto total: $" + datosArriendo[4]);
+        System.out.println("Monto pagado: $" + datosArriendo[5]);
+        System.out.println("Saldo adeudado: $" + datosArriendo[6]);
+        System.out.println();
+
+        System.out.println("----- ANTECEDENTES DEL PAGO -----");
+        int opcionPago;
+        do {
+            System.out.println("Medio de pago (1: Contado, 2: Debito, 3: Credito)");
+            opcionPago = tcld.nextInt();
+        }while (opcionPago != 1 && opcionPago != 2 && opcionPago != 3);
+
+
+        System.out.print("Monto: ");
+        int monto = tcld.nextInt();
+
+        if (opcionPago == 1) {
+            try {
+                controlador.pagaArriendoContado(codigo, monto);
+            } catch (ArriendoException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+        }
+
+        System.out.print("Codigo transaccion: ");
+        String codigoTransaccion = tcld.next();
+
+        System.out.print("Numero tarjeta: ");
+        String numTarjeta = tcld.next();
+
+        if (opcionPago == 2) {
+            try {
+                controlador.pagaArriendoDebito(codigo, monto, codigoTransaccion, numTarjeta);
+            } catch (ArriendoException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+        }
+
+        System.out.print("Numero de cuotas: ");
+        int numCuotas = tcld.nextInt();
+
+        try {
+            controlador.pagaArriendoCredito(codigo, monto, codigoTransaccion, numTarjeta, numCuotas);
+        } catch (ArriendoException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
     private void cambiaEstadoCliente(){
-        //Creo que no esta en el uml o las instrucciones, pero si se cambia el
-        //estado de un cliente, lo hace sin importar si tiene un arriendo sin devolver
         System.out.println("Cambiando el  estado a un cliente... ");
         System.out.print("Rut cliente: ");
         Scanner sc = getTcld();
@@ -324,22 +459,36 @@ public class UIArriendoEquipos {
         }
     }
 
+
+
     private void listaClientes(){
+        String [][] listaclientes= ControladorArriendoEquipos.getInstance().listaClientes();
+        if (listaclientes.length == 0) {
+            System.out.println("No hay clientes que mostrar");
+            return;
+        }
+
         System.out.println("LISTADO DE CLIENTES");
         System.out.println("-------------------\n");
         System.out.printf("%-13s %-23s %-23s %-13s %-8s %-13s%n","RUT","Nombre","Direccion","Telefono","Estado","Nro.Arr.Pdtes");
-        String [][] listaclientes= ControladorArriendoEquipos.getInstance().listaClientes();
-        for (String[] listacliente : listaclientes) {
+        String [][] listaclientes2= ControladorArriendoEquipos.getInstance().listaClientes();
+        for (String[] listacliente : listaclientes2) {
             System.out.printf("%-13s %-23s %-23s %-13s %-8s %-13s%n", listacliente[0], listacliente[1], listacliente[2], listacliente[3], listacliente[4],listacliente[5]);
         }
     }
 
     private void listaEquipos(){
+        String [][] listaequipos= ControladorArriendoEquipos.getInstance().listaEquipos();
+        if (listaequipos.length == 0) {
+            System.out.println("No hay equipos que mostrar");
+            return;
+        }
+
         System.out.println("LISTADO DE EQUIPOS");
         System.out.println("------------------");
         System.out.printf("%-12s %-45s %-7s %-12s %-10s%n","Codigo","Descripcion","Precio","Estado","Situacion");
-        String [][] listaequipos= ControladorArriendoEquipos.getInstance().listaEquipos();
-        for (String[] listaequipo : listaequipos) {
+        String [][] listaequipos2= ControladorArriendoEquipos.getInstance().listaEquipos();
+        for (String[] listaequipo : listaequipos2) {
             System.out.printf("%-12s %-45s %-7s %-12s %-10s%n", listaequipo[0], listaequipo[1], listaequipo[2], listaequipo[3],listaequipo[4]);
         }
 
@@ -411,6 +560,51 @@ public class UIArriendoEquipos {
         }
 
 
+    private void listaArriendospagados(){
+        String [][] Arriendospagados= ControladorArriendoEquipos.getInstance().listaArriendosPagados();
+        System.out.println("LISTADO DE ARRIENDOS");
+        System.out.println("--------------------");
+        System.out.printf("%-7s %-13s %-13s %-10s %-12s %-12s%n", "Codigo", "Estado", "Rut cliente", "Nombre cliente", "Monto deuda", "Monto pagado","Saldo adeudado");
+        for(int i =0;i< Arriendospagados.length;i++){
+            System.out.printf("%-7s %-13s %-13s %-10s %-12s %-12s%n",
+                    Arriendospagados[i][0],Arriendospagados[i][1],Arriendospagados[i][2],
+                    Arriendospagados[i][3],Arriendospagados[i][4],Arriendospagados[i][5],
+                    Arriendospagados[i][6],Arriendospagados[i][7]);
+        }
+
+
+    }
+    private void listaPagosDeUnArriendo() throws ArriendoException {
+        System.out.print("\t Codigo arriendo");
+        long cod=0;
+
+        try {
+            cod = getTcld().nextInt();
+        } catch (Exception e) {
+            System.out.println("Opcion no valida, intente nuevamente");
+        }
+
+        String[][] pagosDeUnArriendo = ControladorArriendoEquipos.getInstance().listaPagosDeArriendo(cod);
+        if(pagosDeUnArriendo==null){
+            System.out.printf("El arriendono tiene pagos asociados");
+        }else {
+            System.out.print(">>>>>>>>>>>   PAGOS REALIZADOS    <<<<<<<<<<<");
+            System.out.printf("%-7s %-13s %-13s", "Monto", "Fecha", "Tipo de pago");
+            for (int i = 0; i < pagosDeUnArriendo.length; i++) {
+                System.out.printf("%-7s %-13s %-13s",
+                        pagosDeUnArriendo[i][0], pagosDeUnArriendo[i][1], pagosDeUnArriendo[i][2]);
+            }
+        }
+
+
+
+    }
+
+
+
+
+
+
 
     private Scanner getTcld() {
         Scanner tcld = new Scanner(System.in);
@@ -445,10 +639,6 @@ public class UIArriendoEquipos {
         for (int i=rutSinDigito.length() - 1; i >= 0; i--) {
             int digito = Integer.parseInt(rutSinDigito.charAt(i) + "");
 
-            // Se puede calcular el numero de la secuencia usadando la posicion y el modulo 0
-            // Si el primer digito la posicion es 0 (en sentido inverso) el modulo de 6 es 0 sumando 2 es 2
-            // con el resto de numeros va a continuar aumentando en 1 hasta llegar al 6 donde vuelve a 0
-            // de ese modo se tiene el minimo de 2 y maximo de 7, con una vuelta cada 6 digitos
             int multiplicaRut = ((rutSinDigito.length() - i - 1) % 6) + 2;
 
             sumadorRut += digito * multiplicaRut;
