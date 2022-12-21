@@ -59,15 +59,26 @@ public class ControladorArriendoEquipos{
 
 
 
-    public void creaConjunto(String cod, String desc) throws EquipoException {//nuevo metodo
-
-        if(buscaEquipo(Long.parseLong(cod)) != null){
+    public void creaConjunto(long cod, String desc, long[] codEquipos) throws EquipoException {
+        //si existe un equipo con el mismo codigo, arroja una excepcion
+        if(buscaEquipo(cod) != null){
             throw new EquipoException("Ya existe un equipo con el código dado");
         }
 
-        todosEquipos.add(new Conjunto(Long.parseLong(cod), desc));
+        ArrayList<Equipo> elementosComponentes = new ArrayList<>();
+        for (long codigo: codEquipos) {
+            Equipo componente = buscaEquipo(codigo);
+            if (componente == null) {
+                throw new EquipoException("Uno de los componentes indicados no existe");
+            }
+            elementosComponentes.add(componente);
+        }
 
+        Conjunto conjunto = new Conjunto(cod, desc);
+        todosEquipos.add(conjunto);
+        elementosComponentes.forEach(conjunto::addEquipo);
     }
+
 
 
 

@@ -40,63 +40,66 @@ public class UIArriendoEquipos {
             System.out.println("9.  Guardar los datos del archivo");
             System.out.println("10. Salir");
             System.out.print("\tIngrese opcion: ");
-                opcion = tcld.nextInt();
+            opcion = tcld.nextInt();
 
-                switch (opcion){
-                    case 1 -> creaCliente();
-                    case 2 -> creaEquipo();
-                    case 3 -> arriendaEquipos();
-                    case 4 -> devuelveEquipos();
-                    case 5 -> cambiaEstadoCliente();
-                    case 6 -> pagaArriendo();
-                    case 7 -> generaReportes();
-                    case 8 -> listaArriendos();
-                    case 9 -> listaDetallesArriendo();
-                    case 10->{}
-
-
-                    default -> System.out.println("***Opcion invalida intentelo de nuevo***");
-                }
-
-            }
-        while(true);
-
-    }
-
-    private void generaReportes(){
-        int opcion;
-        do {
-            Scanner tcld = getTcld();
-            System.out.println("*** MENU DE REPORTES ***\n");
-            System.out.println("1.  Lista todos los clientes");
-            System.out.println("2.  Lista todos los equipos");
-            System.out.println("3.  Lista todos los arriendos");
-            System.out.println("4.  Lista detalles de un arriendo");
-            System.out.println("5.  Lista arriendos con pagos");
-            System.out.println("6.  Lista los pagos de un arriendo");
-            System.out.println("7.  Salir");
-            System.out.print("\tIngrese opcion: ");
-
-            try {
-                opcion = tcld.nextInt();
-                switch (opcion){
-                    case 1 -> listaClientes();
-                    case 2 -> listaEquipos();
-                    case 3 -> listaArriendos();
-                    case 4 -> listaDetallesArriendo();
-                    case 5 -> listaArriendospagados();
-                    case 6 -> listaPagosDeUnArriendo();
-                    case 7 -> {
-                        return;
+            switch (opcion) {
+                case 1 -> creaCliente();
+                case 2 -> creaEquipo();
+                case 3 -> arriendaEquipos();
+                case 4 -> devuelveEquipos();
+                case 5 -> cambiaEstadoCliente();
+                case 6 -> pagaArriendo();
+                case 7 -> generaReportes();
+                case 8 -> {
+                    try {
+                        ControladorArriendoEquipos.getInstance().readDatosSistema();
+                        System.out.println("Datos cargados de forma exitosa");
+                    } catch (ArriendoException e) {
+                        System.out.println(e.getMessage());
                     }
-                    default -> System.out.println("***Opcion invalida intentelo de nuevo***");
                 }
-            }catch (Exception e){
-                System.out.println("Opcion debe ser un numero!");
+                case 9 -> {
+                    try {
+                        ControladorArriendoEquipos.getInstance().saveDatosSistemas();
+                        System.out.println("Datos guardados de forma exitosa");
+                    } catch (ArriendoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                case 10 -> {
+                    return;
+                }
+                default -> System.out.println("***Opcion invalida intentelo de nuevo***");
             }
 
-        }while(true);
+
+    }while(true);
+
     }
+
+    private void generaReportes() {
+        System.out.println("\n\n*** MENU DE REPORTES ***");
+        System.out.println("1. Lista todos los clientes");
+        System.out.println("2. Lista todos los equipos");
+        System.out.println("3. Lista todos los arriendos");
+        System.out.println("4. Lista detalles de un arriendo");
+        System.out.println("5. Lista arriendo con pagos");
+        System.out.println("6. Lista los pagos de un arriendo");
+        System.out.println("7. Salir");
+        System.out.print("\t Ingrese opcion: ");
+        int opcion = getInt();
+        switch (opcion) {
+            case 1 -> listaClientes();
+            case 2 -> listaEquipos();
+            case 3 -> listaArriendos();
+            case 4 -> listaDetallesArriendo();
+            case 5 -> listaArriendospagados();
+            case 6 -> listaPagosDeUnArriendo();
+            case 7 -> System.out.println("Saliendo...");
+            default -> System.out.println("Opcion invalida");
+        }
+    }
+
 
 
     private void creaCliente(){
@@ -143,91 +146,58 @@ public class UIArriendoEquipos {
     }
 
 
-    private void creaEquipo(){// entendiendo que ya no existe el creaEquipo, se entiende a que hace referencia al implemento
-        String [] equipos;
-        int cantidad;
+    private void creaEquipo() {
         System.out.println("Creando un nuevo equipo...");
         ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();
         Scanner tcld = getTcld();
 
         System.out.print("Codigo: ");
-        String cod = tcld.next();
-        try {
-            int codigoNumerico = Integer.parseInt(cod);
-            if (codigoNumerico < 0) {
-                System.out.println("Valor no puede ser negativo");
-                return;
-            }
-        } catch (Exception e) {
-            System.out.println("Codigo debe ser un numero");
-            return;
-        }
+        int cod = getInt();
 
         System.out.print("Descripcion: ");
         String descripcion = tcld.next();
-        if (descripcion.replace(" ", "").equals("")) {
+        if (descripcion.trim().equals("")) {
             System.out.println("Valor no puede estar vacio");
             return;
         }
 
-        System.out.print("\tPrecio arriendo por dia");
-        long precio;
-        try {
-            precio = getTcld().nextLong();
-
-        }catch(Exception e){
-            System.out.println("El valor debe ser numerico");
-            return;
-        }
-
-        System.out.print("Tipo equipo (1: Implemento, 2:Conjunto");
         int tipoEquipo;
-        try{
-            tipoEquipo = tcld.nextInt();
-        }catch (Exception e){
-            System.out.println("El valor debe ser numerico");
+        do {
+            System.out.print("Tipo equipo (1: Implemento, 2: Conjunto): ");
+            tipoEquipo = getInt();
+        } while (tipoEquipo != 1 && tipoEquipo != 2);
+
+        if (tipoEquipo == 1) {
+            System.out.print("Precio arriendo por dia: ");
+            long precioArriendoDia = getInt();
+
+            try {
+                controlador.creaImplemento(cod, descripcion, precioArriendoDia);
+                System.out.println("Equipo creado exitosamente");
+            } catch (EquipoException e) {
+                System.out.println(e.getMessage());
+            }
             return;
         }
-        if(tipoEquipo==2){
-            System.out.print("\tNumero de equipos componentes:");
 
-            try{
-                cantidad= tcld.nextInt();
-                equipos=new String[cantidad];
-            }catch (Exception e){
-                System.out.println("El valor debe ser numerico");
-                return;
-            }
+        System.out.print("\tNumero de equipos componentes: ");
+        int nroComponente = getInt();
+        long[] componentesCod = new long[nroComponente];
 
-
-
-            int cont=0;
-
-            do{
-                cont=cont+1;
-                System.out.print("\tcodigo de equipo "+cont+" de "+cantidad+":");
-                try{
-                    String comp=getTcld().next();
-                    equipos[cont-1]=comp;
-
-                }catch (Exception e){
-                    System.out.println("El valor debe ser numerico");
-                    return;
-                }
-            }while(cont!=cantidad);
-
-            for(int i=0;i<equipos.length;i++){
-                try {
-                    ControladorArriendoEquipos.getInstance().creaImplemento(Long.parseLong(equipos[i]),descripcion,precio);
-                } catch (EquipoException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        for (int i = 0; i < nroComponente; i++) {
+            System.out.print("\tCodigo de equipo " + (i+1) + " de " + nroComponente + ": ");
+            long componente = getInt();
+            componentesCod[i] = componente;
         }
 
-
-
+        try {
+            controlador.creaConjunto(cod, descripcion, componentesCod);
+            System.out.println("Equipo creado exitosamente");
+        } catch (EquipoException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 
 
 
@@ -574,31 +544,35 @@ public class UIArriendoEquipos {
 
 
     }
-    private void listaPagosDeUnArriendo() throws ArriendoException {
-        System.out.print("\t Codigo arriendo");
-        long cod=0;
+    private void listaPagosDeUnArriendo() {
+        System.out.print("\t Codigo arriendo: ");
+        long cod = getInt();
 
+        String[][] pagosDeUnArriendo;
         try {
-            cod = getTcld().nextInt();
-        } catch (Exception e) {
-            System.out.println("Opcion no valida, intente nuevamente");
+            pagosDeUnArriendo = ControladorArriendoEquipos.getInstance().listaPagosDeArriendo(cod);
+        } catch (ArriendoException e) {
+            System.out.println(e.getMessage());
+            return;
         }
 
-        String[][] pagosDeUnArriendo = ControladorArriendoEquipos.getInstance().listaPagosDeArriendo(cod);
-        if(pagosDeUnArriendo==null){
-            System.out.printf("El arriendono tiene pagos asociados");
-        }else {
-            System.out.print(">>>>>>>>>>>   PAGOS REALIZADOS    <<<<<<<<<<<");
-            System.out.printf("%-7s %-13s %-13s", "Monto", "Fecha", "Tipo de pago");
-            for (int i = 0; i < pagosDeUnArriendo.length; i++) {
-                System.out.printf("%-7s %-13s %-13s",
-                        pagosDeUnArriendo[i][0], pagosDeUnArriendo[i][1], pagosDeUnArriendo[i][2]);
-            }
+        if (pagosDeUnArriendo.length == 0) {
+            System.out.println("El arriendo tiene pagos asociados");
+            return;
         }
 
-
-
+        System.out.println(">>>>>>>>>>>   PAGOS REALIZADOS    <<<<<<<<<<<");
+        System.out.printf("%-7s %-13s %-13s%n", "Monto", "Fecha", "Tipo de pago");
+        for (String[] strings : pagosDeUnArriendo) {
+            System.out.printf("%-7s %-13s %-13s%n",
+                    strings[0], strings[1], strings[2]);
+        }
     }
+
+
+
+
+
 
 
 
@@ -667,6 +641,25 @@ public class UIArriendoEquipos {
         }
         return format;
     }
+
+
+    private int getInt() {
+        int numero;
+        Scanner tlcd = getTcld();
+        boolean isNumero = true;
+        do {
+            try {
+                String numeroString = tlcd.next();
+                numero = Integer.parseInt(numeroString);
+                isNumero = false;
+            } catch (NumberFormatException e) {
+                System.out.println("Opcion debe ser numerico");
+                numero = 0; // Esto es solo para que el compilador no siga llorando >:(
+            }
+        } while (isNumero);
+        return numero;
+    }
+
 
 }
 
