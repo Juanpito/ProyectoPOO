@@ -406,7 +406,7 @@ public class UIArriendoEquipos {
 
         if (opcionPago == 1) {
             try {
-                controlador.pagaArriendoContado(codigo, monto);
+                ControladorArriendoEquipos.getInstance().pagaArriendoContado(codigo, monto);
             } catch (ArriendoException e) {
                 System.out.println(e.getMessage());
                 return;
