@@ -10,9 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-//Test y fixes Gonzalo Inostroza y Fabian Bravo
 
-//Parte de Luis Riquelme
 public class UIArriendoEquipos {
     private static UIArriendoEquipos instance;
 
@@ -26,7 +24,7 @@ public class UIArriendoEquipos {
         return instance;
     }
 
-    //invocacion de menú
+
     public void menu() {
         int opcion;
         do {
@@ -80,8 +78,7 @@ public class UIArriendoEquipos {
     }
 
     private void creaCliente() {
-        // Sigue preguntando datos incluso si el cliente ya existe
-        // al final muestra el mensaje de error, pero no estos seguro si es la intencion de la pauta TODO
+
         Scanner tcld = getTcld();
         String rut, nom, dir, tel;
 
@@ -234,7 +231,7 @@ public class UIArriendoEquipos {
     }
 
     private void devuelveEquipos() {
-        //Muestra que el cliente no tiene arriendos por devolver cuando antes se habia arrendado 1 al rut ingresado
+
         Scanner tcld = getTcld();
         ControladorArriendoEquipos controlador = ControladorArriendoEquipos.getInstance();
 
@@ -276,11 +273,9 @@ public class UIArriendoEquipos {
                 System.out.println("El arriendo especificado no existe o no pertenece a este cliente");
                 return;
             }
-            // No es necesario verificar que arriendo sea un numero ya que sabemos que los codigo de los arriendo
-            // mostrados son correctos y en caso de que no este presente ya se devuelve al menu
+
             String[][] listaDetalles = controlador.listaDetallesArriendo(Long.parseLong(arriendo));
-            // No tiene mucho sentido que esto diga "Ingrese codigo y estado..." pero eso dice la pauta
-            // es mas probable que sea ingrese codigo de estado, de todas maneras lo marco como TODO
+
             System.out.println("Ingrese codigo y estado en que se devuelve cada equipo que se indica >>>");
             EstadoEquipo[] estadoEquipos = new EstadoEquipo[listaDetalles.length];
             for (int i = 0; i < listaDetalles.length; i++) {
@@ -385,8 +380,7 @@ public class UIArriendoEquipos {
     }
 
     private void cambiaEstadoCliente() {
-        //Creo que no esta en el uml o las instrucciones, pero si se cambia el
-        //estado de un cliente, lo hace sin importar si tiene un arriendo sin devolver
+
         System.out.println("Cambiando el  estado a un cliente... ");
         System.out.print("Rut cliente: ");
         Scanner sc = getTcld();
@@ -568,8 +562,7 @@ public class UIArriendoEquipos {
         }
     }
 
-    // De acuerdo con la guia del avance se pueden agregar metodos privados para simplificar el codigo
-    //      "Solo se permite agregar métodos privados, si ello lleva a una mejora del código o se logra mayor simplicidad o legibilidad"
+
     private Scanner getTcld() {
         Scanner tcld = new Scanner(System.in);
         tcld.useDelimiter("\t|\r\n|[\n\r\u2028\u2029\u0085]");
@@ -580,19 +573,15 @@ public class UIArriendoEquipos {
         if (rut.equals("")) {
             return false;
         }
-        // Para validar el rut se toman todos lso digitos (sin el digito verificador)
-        // cada digito de multiplica (en orden inverso) con uno de los siguente numero [2,3,4,5,6,7]
-        // luego se suma y se calcula el modulo 11 de lo anterior, el resultado es el digito verificador
-        // si el digito verficador
-        // (Nota: si el resultado es 10 se remplaza el numero con un K)
 
-        // Eliminar . y -
+
+
         rut = rut.replace(".", "");
         rut = rut.replace("-", "");
         String rutSinDigito = rut.substring(0, rut.length() - 1);
         int digitoVerificador;
 
-        // Verificar que el rut sean solo datos numericos
+
         try {
             if (rut.charAt(rut.length() - 1) == 'K' || rut.charAt(rut.length() - 1) == 'k') {
                 digitoVerificador = 10;
@@ -612,10 +601,7 @@ public class UIArriendoEquipos {
                 return false;
             }
 
-            // Se puede calcular el numero de la secuencia usadando la posicion y el modulo 0
-            // Si el primer digito la posicion es 0 (en sentido inverso) el modulo de 6 es 0 sumando 2 es 2
-            // con el resto de numeros va a continuar aumentando en 1 hasta llegar al 6 donde vuelve a 0
-            // de ese modo se tiene el minimo de 2 y maximo de 7, con una vuelta cada 6 digitos
+
             int multiplicaRut = ((rutSinDigito.length() - i - 1) % 6) + 2;
 
             sumadorRut += digito * multiplicaRut;
