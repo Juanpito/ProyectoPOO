@@ -1,4 +1,6 @@
 package Vista;
 
-public class ListadoAriendo {
+import javax.swing.*;
+
+public class ListadoAriendo extends JDialog {
 }

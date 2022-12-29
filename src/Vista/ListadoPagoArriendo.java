@@ -1,4 +1,6 @@
 package Vista;
 
-public class ListadoPagoArriendo {
+import javax.swing.*;
+
+public class ListadoPagoArriendo extends JDialog {
 }

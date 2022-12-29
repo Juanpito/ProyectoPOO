@@ -1,4 +1,6 @@
 package Vista;
 
-public class CreaEquipo {
+import javax.swing.*;
+
+public class CreaEquipo extends JDialog {
 }
