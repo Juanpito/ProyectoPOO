@@ -1,37 +1,37 @@
 package Modelo;
 
-
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class Arriendo {
+//Parte de Fabian Bravo y Gonzalo Inostroza
+
+public class Arriendo implements Serializable {
     private long codigo;
     private LocalDate fechaInicio;
     private LocalDate fechaDevolucion;
     private EstadoArriendo estado;
-    ArrayList<DetalleArriendo>detalleArriendos;
-    Cliente cliente;
+    private ArrayList<DetalleArriendo> detalles;
+    private Cliente cliente;
+    private ArrayList<Pago> pagos;
 
-    ArrayList<Pago>pagos;
-
-
-
-    public Arriendo(long codigo, LocalDate fechaInicio,Cliente cliente) {
+    public Arriendo(long codigo, LocalDate fechaInicio, Cliente cliente) {
         this.codigo = codigo;
-        this.fechaInicio =fechaInicio;
-        this.cliente=cliente;
+        this.fechaInicio = fechaInicio;
+        this.fechaDevolucion = null;
+        this.cliente = cliente;
+        this.detalles = new ArrayList<DetalleArriendo>();
+        this.estado = EstadoArriendo.INICIADO;
+        this.pagos = new ArrayList<>();
         cliente.addArriendo(this);
-        this.estado=EstadoArriendo.INICIADO;
-        this.detalleArriendos=new ArrayList<>();
-        fechaDevolucion=null;//aqui es null porque como sabemos es un atributo que aun no existe sino hasta cuando se devuelva
-        this.pagos=new ArrayList<>();
     }
 
-    public int getCodigo(){
+    public int getCodigo() {
         return (int) codigo;
+        // AAAAAAAAAAAA PORQUE LO GUARDAS COMO UN LONG PARA DESPUES MANDARLO COMO INT
+        // NADA TIENE SENTIDO, ESTAS GASTANDO BITS DE MÄS AAAAAAAAAAAAAAAAAAAAAAAAa
     }
 
     public LocalDate getFechaInicio() {
@@ -47,128 +47,121 @@ public class Arriendo {
     }
 
     public void setFechaDevolucion(LocalDate fechaDevolucion) {
-        this.fechaDevolucion=fechaDevolucion;
+        this.fechaDevolucion = fechaDevolucion;
     }
 
     public void setEstado(EstadoArriendo estado) {
         this.estado = estado;
     }
 
-    public void addDetalleArriendo(Equipo equipo){
-        DetalleArriendo detalle=new DetalleArriendo(equipo.getPrecioArriendoDia(),equipo,this);
-        detalleArriendos.add(detalle);
+    public void addDetalleArriendo(Equipo equipo) {
+        DetalleArriendo detalle = new DetalleArriendo(equipo.getPrecioArriendoDia(), equipo, this);
+        detalles.add(detalle);
     }
 
+    public int getNumeroDiasArriendo() {
+        int dias;
 
+        if(fechaDevolucion == null){
+            return 0;
+        }
 
-    public int getNumeroDiasArriendo(){
-      Period periodo=Period.between(fechaInicio,fechaDevolucion);
-      int dias=periodo.getDays();
-      return dias+1;
-      //dias sumamos 1 porque si se parte desde el dia presente, sera mi 0 mi primer dia y así sucesivamente//
+        Period periodo = Period.between(fechaInicio, fechaDevolucion);
+        //dias = ((fechaDevolucion.getYear() - fechaInicio.getYear()) * 365) + (fechaDevolucion.getDayOfYear() - fechaInicio.getDayOfYear());
+        // Se le suma 1 en todos los casos, ya que si resulta en 0 dias, es 1 luego cuando ya pase un dia va a ser el primero (que se
+        // contabilizo como 0 y el segundo)
+        dias = periodo.getDays() + 1;
+
+        return dias;
     }
 
-    public long getMontoTotal(){
-        long monto=0;
-        if (this.getEstado()== EstadoArriendo.INICIADO) {
+    public long getMontoTotal() {
+        // TODO
+        long monto = 0;
+
+        if (estado == EstadoArriendo.INICIADO) {
             return monto;
         }
-        //En esta parte un cliente puede tener muchos arriendos, por tanto cada detalle de arriendo (en su arraylist) con su respectivo precio aplicado deberá sumarse al monto
-        for (DetalleArriendo detalle:detalleArriendos){
-            monto=monto+detalle.getPrecioAplicado();
+
+        for(DetalleArriendo detalle : detalles){
+            monto += detalle.getPrecioAplicado();
         }
 
-        //para esta parte retornamos el monto para el caso de entregado, retorna monto de lo que le saldrá al cliente. Mientras que al devolverlo, se cobrará por los dias respectivos
-        if (this.getEstado()==EstadoArriendo.ENTREGADO){
-                return monto;
-        }else{
-            //else para decir que esta devuelto y que por tanto se cobrará segun los dias
-            return monto*getNumeroDiasArriendo();
+        if (EstadoArriendo.ENTREGADO == estado) {
+            return monto;
+        } else {
+            return monto * getNumeroDiasArriendo();
         }
-
-
-
     }
 
-
-
-    public String[][]getDetallesToString(){
-        //aqui pregunto no solo si detalleArriendo es null, sino tambien si es iniciado(tenor del proyecto word)
-        if (detalleArriendos==null&&this.estado.equals(EstadoArriendo.INICIADO)){
-            String vacio[][]=new String [0][0];
-            return vacio;
-        }
-
-
+    public String[][] getDetallesToString() {
+        String[][] detallesArriendo;
         Equipo equipo;
-        String[][] detallesStr = new String[detalleArriendos.size()][4];
-        int i = 0;
-        for (DetalleArriendo detalle : detalleArriendos) {
-                equipo=detalle.getEquipo();
-                detallesStr[i][0] = String.valueOf(detalle.getEquipo().getCodigo());
-                detallesStr[i][1] = equipo.getDescripcion();
-                detallesStr[i][2] = String.valueOf(detalle.getPrecioAplicado());
-                i++;
+
+        // TODO: Porque && y no ||
+        if(EstadoArriendo.INICIADO == this.estado && detalles.size() == 0){
+            return new String[0][0];
         }
-        return detallesStr;
 
+        detallesArriendo = new String[detalles.size()][4];
 
+        for(int i = 0; i < detalles.size(); i++){
+            equipo = detalles.get(i).getEquipo();
+            detallesArriendo[i][0] = String.valueOf(equipo.getCodigo());
+            detallesArriendo[i][1] = equipo.getDescripcion();
+            detallesArriendo[i][2] = String.valueOf(detalles.get(i).getPrecioAplicado());
+        }
 
+        return detallesArriendo;
     }
 
-    public Cliente getCliente(){
+    public Cliente getCliente() {
         return cliente;
     }
 
-
-
-    public Equipo[]getEquipos(){
-        Equipo[]equipos=new Equipo[detalleArriendos.size()];
-        int i=0;
-        for (DetalleArriendo detalle:detalleArriendos){
-            equipos[i]=detalle.getEquipo();
-            i++;
+    public Equipo[] getEquipos() {
+        Equipo[] equipos = new Equipo[detalles.size()];
+        for (int i=0; i<equipos.length; i++) {
+            equipos[i] = detalles.get(i).getEquipo();
         }
         return equipos;
-
-
-
     }
 
-
-    public void addPagoContado(Contado pago){
-        pagos.add((Pago)pago);//aqui hago un casting porque se supone que para añadir debe ser un objeto del mismo
-
-    }
-
-    public void addPagoDebito(Debito pago){
-        pagos.add((Pago)pago);
-    }
-
-    public void addPagoCredito(Credito pago){
-        pagos.add((Pago)pago);
-
-    }
-
-    public long getMontoPagado(){
-        if(pagos.isEmpty()){
-            return 0;   //esto es lo que dice el documento
+    public void addPagoContado(Contado contado) {
+        pagos.add(contado);
+        if (getSaldoAdeudado() == 0) {
+            estado = EstadoArriendo.PAGADO;
         }
-        long cont=0;
-
-        for(Pago pago:pagos){
-            cont+=pago.getMonto();
-        }
-        return cont;
-
-
     }
 
-    public long getSaldoAdeudado(){
+    public void addPagoDebito(Debito debito) {
+        pagos.add(debito);
+        if (getSaldoAdeudado() == 0) {
+            estado = EstadoArriendo.PAGADO;
+        }
+    }
+
+    public void addPagoCredito(Credito credito) {
+        pagos.add(credito);
+        if (getSaldoAdeudado() == 0) {
+            estado = EstadoArriendo.PAGADO;
+        }
+    }
+
+    public long getMontoPagado() {
+        if (pagos.isEmpty()) {
+            return 0;
+        }
+        return pagos.stream().
+                map(Pago::getMonto).            // Mapear los valores del monto paa no trabajar con los objetos
+                        reduce(0L, Long::sum);  // Sumar los valores
+    }
+
+    public long getSaldoAdeudado() {
         return getMontoTotal() - getMontoPagado();
     }
 
-    public String[][]getPagosToString(){
+    public String[][] getPagosToString() {
         if (pagos.isEmpty()) {
             return new String[0][0];
         }
@@ -177,22 +170,12 @@ public class Arriendo {
         for (int i=0; i<pagos.size(); i++) {
             Pago pago = pagos.get(i);
             resultado[i][0] = pago.getMonto() + "";
-            resultado[i][1] = pago.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            resultado[i][2] = pago.getClass() + "";//este es el tipo de pago, con el getClass
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            resultado[i][1] = pago.getFecha().format(formato);
+            resultado[i][2] = pago.getClass().getSimpleName() + "";
 
         }
         return resultado;
-
     }
-
-
-
-
-
-
-
-
-
-
-
 }
+

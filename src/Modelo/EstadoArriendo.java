@@ -3,5 +3,6 @@ package Modelo;
 public enum EstadoArriendo{
     INICIADO,
     ENTREGADO,
-    DEVUELTO
+    DEVUELTO,
+    PAGADO
 }

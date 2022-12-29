@@ -12,11 +12,7 @@ public class Conjunto extends Equipo{
 
     @Override
     public long getPrecioArriendoDia() {
-        long i=0;
-        for(Equipo equipo:equipos){
-            i=i+equipo.getPrecioArriendoDia();
-        }
-        return i;
+        return equipos.stream().map(equipo -> equipo.getPrecioArriendoDia()).reduce(0L, Long::sum);
     }
 
     public void addEquipo(Equipo equipo){
