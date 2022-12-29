@@ -2,5 +2,5 @@ package Vista;
 
 import javax.swing.*;
 
-public class Inicial extends JDialog {
+public class Principal extends JDialog {
 }
