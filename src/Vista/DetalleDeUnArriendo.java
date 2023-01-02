@@ -3,12 +3,12 @@ package Vista;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ListadoArriendo extends JDialog {
+public class DetalleDeUnArriendo extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    public ListadoArriendo() {
+    public DetalleDeUnArriendo() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

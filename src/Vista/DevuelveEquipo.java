@@ -3,12 +3,12 @@ package Vista;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class CrearEquipo extends JDialog {
+public class DevuelveEquipo extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    public CrearEquipo() {
+    public DevuelveEquipo() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
