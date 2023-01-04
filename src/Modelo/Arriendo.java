@@ -6,7 +6,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-//Parte de Fabian Bravo y Gonzalo Inostroza
+
 
 public class Arriendo implements Serializable {
     private long codigo;
@@ -30,8 +30,7 @@ public class Arriendo implements Serializable {
 
     public int getCodigo() {
         return (int) codigo;
-        // AAAAAAAAAAAA PORQUE LO GUARDAS COMO UN LONG PARA DESPUES MANDARLO COMO INT
-        // NADA TIENE SENTIDO, ESTAS GASTANDO BITS DE MÄS AAAAAAAAAAAAAAAAAAAAAAAAa
+
     }
 
     public LocalDate getFechaInicio() {
@@ -67,9 +66,7 @@ public class Arriendo implements Serializable {
         }
 
         Period periodo = Period.between(fechaInicio, fechaDevolucion);
-        //dias = ((fechaDevolucion.getYear() - fechaInicio.getYear()) * 365) + (fechaDevolucion.getDayOfYear() - fechaInicio.getDayOfYear());
-        // Se le suma 1 en todos los casos, ya que si resulta en 0 dias, es 1 luego cuando ya pase un dia va a ser el primero (que se
-        // contabilizo como 0 y el segundo)
+
         dias = periodo.getDays() + 1;
 
         return dias;
@@ -153,8 +150,8 @@ public class Arriendo implements Serializable {
             return 0;
         }
         return pagos.stream().
-                map(Pago::getMonto).            // Mapear los valores del monto paa no trabajar con los objetos
-                        reduce(0L, Long::sum);  // Sumar los valores
+                map(Pago::getMonto).
+                        reduce(0L, Long::sum);
     }
 
     public long getSaldoAdeudado() {

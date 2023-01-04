@@ -7,6 +7,9 @@ public class NuevoImplemento extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
 
     public NuevoImplemento() {
         setContentPane(contentPane);
@@ -49,5 +52,12 @@ public class NuevoImplemento extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+
+    public static void display() {
+        NuevoImplemento dialog = new NuevoImplemento();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }

@@ -7,6 +7,10 @@ public class NuevoCliente extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
 
     public NuevoCliente() {
         setContentPane(contentPane);
@@ -50,4 +54,12 @@ public class NuevoCliente extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
+    public static void display() {
+        NuevoCliente dialog = new NuevoCliente();
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+
+
 }

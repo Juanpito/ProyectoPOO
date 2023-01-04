@@ -3,12 +3,14 @@ package Vista;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ListadoArriendosPorDevolver extends JDialog {
+public class ListadoArriendosPagados extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTable table1;
+    private JLabel listadoArriendosPagadosLabel;
 
-    public ListadoArriendosPorDevolver() {
+    public ListadoArriendosPagados() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -49,5 +51,12 @@ public class ListadoArriendosPorDevolver extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+
+    public static void display() {
+        ListadoArriendosPagados dialog = new ListadoArriendosPagados();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }

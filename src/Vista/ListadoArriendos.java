@@ -7,6 +7,7 @@ public class ListadoArriendos extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTable table1;
 
     public ListadoArriendos() {
         setContentPane(contentPane);
@@ -49,5 +50,11 @@ public class ListadoArriendos extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public static void display() {
+        ListadoArriendos dialog = new ListadoArriendos();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }

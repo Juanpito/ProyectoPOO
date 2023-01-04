@@ -50,4 +50,11 @@ public class PagarArriendo extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
+    public static void display() {
+        PagarArriendo dialog = new PagarArriendo();
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+
 }

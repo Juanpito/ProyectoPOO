@@ -7,6 +7,11 @@ public class DevuelveEquipo extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JRadioButton operativoRadioButton;
+    private JRadioButton reparaciónRadioButton;
+    private JRadioButton dadoDeBajaRadioButton;
 
     public DevuelveEquipo() {
         setContentPane(contentPane);
@@ -50,4 +55,11 @@ public class DevuelveEquipo extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
+    public static void display() {
+        DevuelveEquipo dialog = new DevuelveEquipo();
+        dialog.pack();
+        dialog.setVisible(true);
+    }
+
 }

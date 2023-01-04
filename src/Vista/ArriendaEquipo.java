@@ -7,6 +7,8 @@ public class ArriendaEquipo extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTextField textField1;
+    private JTextField textField2;
 
     public ArriendaEquipo() {
         setContentPane(contentPane);
@@ -49,5 +51,11 @@ public class ArriendaEquipo extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public static void display() {
+        ArriendaEquipo dialog = new ArriendaEquipo();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }

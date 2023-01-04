@@ -7,6 +7,8 @@ public class NuevoConjunto extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTextField textField1;
+    private JTextField textField2;
 
     public NuevoConjunto() {
         setContentPane(contentPane);
@@ -49,5 +51,11 @@ public class NuevoConjunto extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public static void display() {
+        NuevoConjunto dialog = new NuevoConjunto();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Vista.DetalleDeUnArriendo">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Vista.ListadoArriendosPagados">
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
@@ -57,14 +57,14 @@
         <properties/>
         <border type="none"/>
         <children>
-          <scrollpane id="27bb3">
+          <scrollpane id="e14d0">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="d5121" class="javax.swing.JTable" binding="table1" default-binding="true">
+              <component id="cfffd" class="javax.swing.JTable" binding="table1" default-binding="true">
                 <constraints/>
                 <properties/>
               </component>
@@ -72,13 +72,13 @@
           </scrollpane>
         </children>
       </grid>
-      <component id="84481" class="javax.swing.JLabel">
+      <component id="35203" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <icon value="Vista/Iconos/32x32/ski.png"/>
-          <text value="Detalles de un Arriendo"/>
+          <icon value="Vista/Iconos/32x32/Arriendos-Pagados.png"/>
+          <text value="Listado arriendos pagados"/>
         </properties>
       </component>
     </children>

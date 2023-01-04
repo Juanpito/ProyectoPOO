@@ -7,6 +7,7 @@ public class ListadoClientes extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTable table1;
 
     public ListadoClientes() {
         setContentPane(contentPane);
@@ -49,5 +50,12 @@ public class ListadoClientes extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+
+    public static void display() {
+        ListadoClientes dialog = new ListadoClientes();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }

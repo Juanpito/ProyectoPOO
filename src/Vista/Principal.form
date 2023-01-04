@@ -121,7 +121,7 @@
             </constraints>
             <properties>
               <icon value="Vista/Iconos/128x128/ArriendosPagados.png"/>
-              <text value="Listado Arriendos por devolver"/>
+              <text value="Listado Arriendos pagados"/>
             </properties>
           </component>
           <component id="ece88" class="javax.swing.JButton" binding="listadoArriendosButton1" default-binding="true">
@@ -157,7 +157,7 @@
             </constraints>
             <properties>
               <icon value="Vista/Iconos/128x128/ListadoPago.png"/>
-              <text value="Listado Pagos Arriendo"/>
+              <text value="Listado Pagos de un Arriendo"/>
             </properties>
           </component>
           <component id="177a9" class="javax.swing.JButton" binding="detalleDeUnArriendoButton" default-binding="true">

@@ -48,6 +48,7 @@ public class Principal extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
         abrirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,13 +70,14 @@ public class Principal extends JDialog {
         nuevoClienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                NuevoCliente.display();
 
             }
         });
         nuevoImplementoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                NuevoImplemento.display();
             }
         });
         nuevoConjuntoButton.addActionListener(new ActionListener() {
@@ -130,6 +132,67 @@ public class Principal extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+            }
+        });
+        pagaArriendoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PagarArriendo.display();
+            }
+        });
+        arriendaEquipoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArriendaEquipo.display();
+            }
+        });
+        nuevoConjuntoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NuevoConjunto.display();
+            }
+        });
+        devuelveEquipoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DevuelveEquipo.display();
+            }
+        });
+        listadoArriendosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListadoArriendosPagados.display();
+            }
+        });
+        listadoArriendosButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListadoArriendos.display();
+            }
+        });
+        listadoClientesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListadoClientes.display();
+
+            }
+        });
+        listadoEquiposButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListadoEquipos.display();
+            }
+        });
+        listadoPagosArriendoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListadoPagosArriendo.display();
+            }
+        });
+        detalleDeUnArriendoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DetalleDeUnArriendo.display();
             }
         });
     }

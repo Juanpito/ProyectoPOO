@@ -7,6 +7,7 @@ public class DetalleDeUnArriendo extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JTable table1;
 
     public DetalleDeUnArriendo() {
         setContentPane(contentPane);
@@ -49,5 +50,10 @@ public class DetalleDeUnArriendo extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+    public static void display() {
+        DetalleDeUnArriendo dialog = new DetalleDeUnArriendo();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 }
