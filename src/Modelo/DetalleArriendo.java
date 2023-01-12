@@ -1,6 +1,8 @@
 package Modelo;
 
-public class DetalleArriendo {
+import java.io.Serializable;
+
+public class DetalleArriendo implements Serializable {
     private long precioAplicado;
     private Arriendo arriendo;
     private Equipo equipo;

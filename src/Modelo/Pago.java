@@ -1,8 +1,9 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Pago {
+public abstract class Pago implements Serializable {
     private long monto;
     private LocalDate fecha;
 

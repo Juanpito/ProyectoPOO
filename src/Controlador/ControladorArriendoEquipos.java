@@ -447,7 +447,7 @@ public class ControladorArriendoEquipos implements Serializable {
             escritor.writeObject(this);
             escritor.close();
         } catch (IOException e) {
-            throw new ArriendoException("No ha sido posible leer datos del sistema desde archivo");
+            throw new ArriendoException("No ha sido posible guardar datos del sistema desde archivo");
         }
     }
 
