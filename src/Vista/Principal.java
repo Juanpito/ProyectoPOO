@@ -226,10 +226,11 @@ public class Principal extends JDialog {
     private void onabrirButton() {
         try {
             ControladorArriendoEquipos.getInstance().readDatosSistema();
-            JOptionPane.showMessageDialog(this, "Datos guardos correctamente", "info", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos cargados correctamente", "info", JOptionPane.INFORMATION_MESSAGE);
         } catch (ArriendoException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
 
     }
 
