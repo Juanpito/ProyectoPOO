@@ -71,7 +71,9 @@
                 <children>
                   <component id="d0d3d" class="javax.swing.JTable" binding="table1" default-binding="true">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <enabled value="false"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

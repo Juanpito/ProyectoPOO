@@ -51,30 +51,22 @@ public class ListadoPagosArriendo extends JDialog {
 
     public static void display() {
         String codigo = JOptionPane.showInputDialog("Ingrese codigo del arriendo");
-        if(codigo.equals("")){
-            JOptionPane.showMessageDialog(null, "Datos invalidos");
+        if (codigo == null) {
             return;
         }
 
         try{
             String[][] pagos = ControladorArriendoEquipos.getInstance().listaPagosDeArriendo(Long.parseLong(codigo));
-
             String[] columnas = {"Monto", "Fecha", "Tipo pago"};
             long codigoL = Long.parseLong(codigo);
-
             ListadoPagosArriendo dialog = new ListadoPagosArriendo(pagos, columnas, (codigoL));
-
             dialog.pack();
             dialog.setVisible(true);
-            System.exit(0);
-        }catch (ArriendoException e){
-            JOptionPane.showMessageDialog(null, e.getMessage());
-            return;
+        } catch (ArriendoException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El codigo debe ser numerico", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 }
 

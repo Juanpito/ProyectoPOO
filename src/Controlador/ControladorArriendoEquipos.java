@@ -298,8 +298,7 @@ public class ControladorArriendoEquipos implements Serializable {
     }
 
     public String[] consultaArriendoAPagar(long codigo){
-        // TODO: la pauta no dice que revise el caso donde esta entregado y pagado
-        // puede ser que al momento de completar el pago se devuelva y no sea problema
+
         Arriendo arriendo = buscaArriendo(codigo);
         if (arriendo == null || arriendo.getEstado() != EstadoArriendo.DEVUELTO) {
             return new String[0];
@@ -517,7 +516,7 @@ public class ControladorArriendoEquipos implements Serializable {
         if (arriendo == null) {
             throw new ArriendoException("No existe arriendo con el codigo dado");
         }
-        if (arriendo.getEstado() != EstadoArriendo.DEVUELTO) {
+        if (arriendo.getEstado() != EstadoArriendo.DEVUELTO&&arriendo.getEstado()!=EstadoArriendo.PAGADO) {
             throw new ArriendoException("Arriendo no se encuentra habilitado para pagos");
         }
 

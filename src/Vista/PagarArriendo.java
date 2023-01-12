@@ -1,10 +1,12 @@
 package Vista;
 
 import Controlador.ControladorArriendoEquipos;
+import Excepciones.ArriendoException;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class PagarArriendo extends JDialog {
     private JPanel contentPane;
@@ -34,51 +36,18 @@ public class PagarArriendo extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        NumTransaccion.setEnabled(false);
-        NumTarjeta.setEnabled(false);
-        NumCuotas.setEnabled(false);
-        numtrans.setEnabled(false);
-        numtar.setEnabled(false);
-        numcuot.setEnabled(false);
-        contadoRadioButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                contado();
-            }
-        });
-        Monto.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                monto();
-            }
-        });
-        creditoRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                credito();
-            }
-        });
-        debitoRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                debito();
-            }
-        });
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        actualizaTextField(false, false, false);
+        fechaHoy.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
-        buscarArriendoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {BuscarArriendo();}
-        });
+        contadoRadioButton.addActionListener(e -> actualizaTextField(false, false, false));
+        debitoRadioButton.addActionListener(e -> actualizaTextField(true, true, false));
+        creditoRadioButton.addActionListener(e -> actualizaTextField(true, true, true));
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
+
+        buscarArriendoButton.addActionListener(e -> buscarArriendo());
+
+        buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -89,120 +58,92 @@ public class PagarArriendo extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(
+                e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-    private void monto(){
-        if(Monto !=null){
-            NumTransaccion.setEnabled(true);
-            NumTarjeta.setEnabled(true);
-            NumCuotas.setEnabled(true);
-            numtrans.setEnabled(true);
-            numtar.setEnabled(true);
-            numcuot.setEnabled(true);
-        }else{
-            NumTransaccion.setEnabled(false);
-            NumTarjeta.setEnabled(false);
-            NumCuotas.setEnabled(false);
-            numtrans.setEnabled(false);
-            numtar.setEnabled(false);
-            numcuot.setEnabled(false);
-        }
+    private void actualizaTextField(boolean transaccion, boolean tarjeta, boolean coutas) {
+        numtrans.setEnabled(transaccion);
+        numtar.setEnabled(tarjeta);
+        numcuot.setEnabled(coutas);
+        numtrans.setEnabled(transaccion);
+        numtar.setEnabled(tarjeta);
+        numcuot.setEnabled(coutas);
     }
-    private void contado(){
-        NumTransaccion.setEnabled(true);
-        NumTarjeta.setEnabled(false);
-        NumCuotas.setEnabled(false);
-        numtrans.setEnabled(false);
-        numtar.setEnabled(false);
-        numcuot.setEnabled(false);
-    }
-    private void credito(){
-        NumTransaccion.setEnabled(true);
-        NumTarjeta.setEnabled(true);
-        NumCuotas.setEnabled(true);
-        numtrans.setEnabled(true);
-        numtar.setEnabled(true);
-        numcuot.setEnabled(true);
-    }
-    private void debito(){
-        NumTransaccion.setEnabled(true);
-        NumTarjeta.setEnabled(true);
-        NumCuotas.setEnabled(true);
-        numtrans.setEnabled(true);
-        numtar.setEnabled(true);
-        numcuot.setEnabled(true);
-    }
+
     private void onOK() {
-
-        String codigo= buscarArriendo.getText();
-        String monto= Monto.getText();
-        String NumeroDeTransaccion= NumTransaccion.getText();
-        String NumeroDeTarjeta= NumTarjeta.getText();
-        String NumeroDeCuotas= NumCuotas.getText();
-        ButtonGroup grupo= new ButtonGroup();
-        grupo.add(contadoRadioButton);
-        grupo.add(debitoRadioButton);
-        grupo.add(creditoRadioButton);
-
-        if(contadoRadioButton.isSelected()&&!monto.isEmpty()){
-
-            try{
-                ControladorArriendoEquipos.getInstance().pagaArriendoContado(Long.parseLong(codigo),Long.parseLong(monto));
-
-            }catch (Exception e){
-                JOptionPane.showMessageDialog(this,"NO SE HA PODIDO PAGAR ","ERROR",JOptionPane.WARNING_MESSAGE);
-            }
-        } else if (creditoRadioButton.isSelected()) {
-            try{
-                ControladorArriendoEquipos.getInstance().pagaArriendoCredito(Long.parseLong(codigo),Long.parseLong(monto),NumeroDeTransaccion,NumeroDeTarjeta,Integer.parseInt(NumeroDeCuotas));
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(this,"NO SE HA PODIDO PAGAR ","ERROR",JOptionPane.WARNING_MESSAGE);
-            }
-        } else if (debitoRadioButton.isSelected()) {
-            try {
-                ControladorArriendoEquipos.getInstance().pagaArriendoDebito(Long.parseLong(codigo),Long.parseLong(monto),NumeroDeTransaccion,NumeroDeTarjeta);
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(this,"NO SE HA PODIDO PAGAR ","ERROR",JOptionPane.WARNING_MESSAGE);
-            }
-
+        String codigoStr = buscarArriendo.getText();
+        String montoStr = Monto.getText();
+        String NumeroDeTransaccion = numtrans.getText();
+        String NumeroDeTarjeta = numtar.getText();
+        String NumeroDeCuotas = numcuot.getText();
+        if (codigoStr.trim().equals("") || montoStr.trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "No se pueden dejar campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        buscarArriendo.setText(" ");
-        Monto.setText(" ");
-        NumTransaccion.setText(" ");
-        NumTarjeta.setText(" ");
-        NumCuotas.setText(" ");
 
-        dispose();
+        try {
+            long codigo = Long.parseLong(codigoStr);
+            long monto = Long.parseLong(montoStr);
+
+            if (contadoRadioButton.isSelected()) {
+                ControladorArriendoEquipos.getInstance().pagaArriendoContado(codigo, monto);
+                JOptionPane.showMessageDialog(this, "Arriendo pagado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            boolean checker = NumeroDeTarjeta.trim().equals("") || NumeroDeTransaccion.trim().equals("");
+
+            if (debitoRadioButton.isSelected() && !checker) {
+                ControladorArriendoEquipos.getInstance().pagaArriendoDebito(codigo,monto,NumeroDeTransaccion,NumeroDeTarjeta);
+            } else if (creditoRadioButton.isSelected() && !checker) {
+                int cuotas = Integer.parseInt(NumeroDeCuotas);
+                ControladorArriendoEquipos.getInstance().pagaArriendoCredito(codigo,monto,NumeroDeTransaccion, NumeroDeTarjeta, cuotas);
+            } else {
+                JOptionPane.showMessageDialog(this, "Los parametros no pueden estar vacios", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            JOptionPane.showMessageDialog(this, "Arriendo pagado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ArriendoException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Los campos de codigo, monto y cuotas deben ser numericos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        buscarArriendo.setText("");
+        Monto.setText("");
+        numtrans.setText("");
+        numtar.setText("");
+        numcuot.setText("");
+
+        Estado.setText("");
+        rutCliente.setText("");
+        nombreCLiente.setText("");
+        montoTotal.setText("");
+        montoAdeudado.setText("");
+        montoPagado.setText("");
     }
-    private void BuscarArriendo(){
+    private void buscarArriendo(){
         String CodigoDeArriendo = buscarArriendo.getText();
         if(!CodigoDeArriendo.isEmpty()){
             try {
-
                 String[] consultaArriendo = ControladorArriendoEquipos.getInstance()
                         .consultaArriendoAPagar(Long.parseLong(CodigoDeArriendo));
                 Estado.setText(consultaArriendo[1]);
                 rutCliente.setText(consultaArriendo[2]);
                 nombreCLiente.setText(consultaArriendo[3]);
                 montoTotal.setText(consultaArriendo[4]);
-                montoAdeudado.setText(consultaArriendo[5]);
-                montoPagado.setText(consultaArriendo[6]);
-                fechaHoy.setText(String.valueOf(LocalDate.now()));
-                fechaHoy.setText(String.valueOf(LocalDate.now()));
+                montoAdeudado.setText(consultaArriendo[6]);
+                montoPagado.setText(consultaArriendo[5]);
 
-            }catch(Exception e ){
-                JOptionPane.showMessageDialog(this,"El arriendo no existe ","Advertencia",JOptionPane.INFORMATION_MESSAGE);
+            }catch(Exception e) {
+                JOptionPane.showMessageDialog(this,"No existe arriendo","Advertencia",JOptionPane.WARNING_MESSAGE);
             }
-
         }
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 
