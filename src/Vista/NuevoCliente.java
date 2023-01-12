@@ -1,5 +1,8 @@
 package Vista;
 
+import Controlador.ControladorArriendoEquipos;
+import Excepciones.ClienteException;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -7,10 +10,10 @@ public class NuevoCliente extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
+    private JTextField nombre;
+    private JTextField rut;
+    private JTextField direccion;
+    private JTextField telefono;
 
     public NuevoCliente() {
         setContentPane(contentPane);
@@ -46,8 +49,50 @@ public class NuevoCliente extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        String StrNombre=nombre.getText();
+        String StrRut=rut.getText();
+        String StrDireccion=direccion.getText();
+        String Strtelefono= telefono.getText();
+
+        ///Aqui podria ir un if Radiobutton
+        //if(organicoRadioButton.isSelected()){
+        // tipoCultivo=Tipocultivo.ORGANICO;
+        // }
+
+        if(!StrNombre.isEmpty()&&!StrRut.isEmpty()&& !StrDireccion.isEmpty()
+                &&!Strtelefono.isEmpty()){
+            try{
+                ControladorArriendoEquipos.getInstance().creaCliente(StrRut,StrNombre,StrDireccion,Strtelefono);
+                JOptionPane.showMessageDialog(this,"Se ha creado cliente exitosamente", "",JOptionPane.PLAIN_MESSAGE);
+
+
+
+
+
+            } catch (ClienteException e) {
+                throw new RuntimeException(e);
+            }//aqui podria bien ir un catch(NumberFormatException e){
+            // JOptionPane.showMessageDialog(this, "id no valido","",JOptionPane.Error_Message);
+            //
+            // }catch (XXXEcpetion e){
+            // JoptionPane.showMessageDialog(this, e.getMessage(),[....])}
+
+        }else{
+            JOptionPane.showMessageDialog(this,"uno o mas datos ausentes","",JOptionPane.ERROR_MESSAGE);
+        }
+
+        nombre.setText("");
+        rut.setText("");
+        direccion.setText("");
+        telefono.setText("");
+        //aqui podria haber un button organicoRadioButton.setSelected(true);
+
+
+
+
+        //aqui sacamos el dispose(para que no arroje salir de la ventana)
+
+
     }
 
     private void onCancel() {

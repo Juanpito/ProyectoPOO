@@ -1,5 +1,11 @@
 package Vista;
 
+import Controlador.ControladorArriendoEquipos;
+import Excepciones.ArriendoException;
+import Excepciones.ClienteException;
+import Modelo.Cliente;
+import Modelo.Implemento;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -52,14 +58,19 @@ public class Principal extends JDialog {
         abrirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                onabrirButton();
 
             }
+
+
         });
         GuardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                onguardarButton();
 
             }
+
         });
         arriendaEquipoButton.addActionListener(new ActionListener() {
             @Override
@@ -110,12 +121,7 @@ public class Principal extends JDialog {
 
             }
         });
-        listadoClientesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
         listadoEquiposButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -173,7 +179,7 @@ public class Principal extends JDialog {
         listadoClientesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListadoClientes.display();
+                onListarClientes();
 
             }
         });
@@ -197,7 +203,35 @@ public class Principal extends JDialog {
         });
     }
 
+    private void onListarClientes() {
+        String[][] datosListado = ControladorArriendoEquipos.getInstance().listaClientes();
+        if (datosListado.length > 0) {
+            String[] columnas = {"Rut", "Nombre", "Dirección", "Telefono", "Activo/Inactivo"};
+            ListadoClientes.display(datosListado,columnas);
+        } else {
+            JOptionPane.showMessageDialog(this,"No existen datos asociados", "",JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    private void onguardarButton() {
+        try {
+            ControladorArriendoEquipos.getInstance().saveDatosSistemas();
+            JOptionPane.showMessageDialog(this, "Datos guardos correctamente", "info", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ArriendoException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    private void onabrirButton() {
+        try {
+            ControladorArriendoEquipos.getInstance().readDatosSistema();
+            JOptionPane.showMessageDialog(this, "Datos guardos correctamente", "info", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ArriendoException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
 
 
 

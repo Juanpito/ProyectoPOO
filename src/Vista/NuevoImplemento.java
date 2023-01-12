@@ -1,28 +1,34 @@
 package Vista;
 
+import Controlador.ControladorArriendoEquipos;
+import Excepciones.EquipoException;
+
 import javax.swing.*;
 import java.awt.event.*;
 
 public class NuevoImplemento extends JDialog {
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JPanel panel1;
+    private JButton OKButton;
+    private JButton volverButton;
+    private JTextField textFieldCodigo;
+    private JTextField textFieldDescripcion;
+    private JLabel Codigo;
+    private JTextField textFieldPrecio;
+    private JLabel Descripcion;
+    private JLabel PrecioarriendoDia;
 
     public NuevoImplemento() {
-        setContentPane(contentPane);
+        setContentPane(panel1);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        getRootPane().setDefaultButton(OKButton);
 
-        buttonOK.addActionListener(new ActionListener() {
+        OKButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
         });
 
-        buttonCancel.addActionListener(new ActionListener() {
+        volverButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
@@ -37,17 +43,39 @@ public class NuevoImplemento extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
+        panel1.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-        // add your code here
-        dispose();
+    public void onOK(){
+        String codigo = textFieldCodigo.getText();
+        String descripcion = textFieldDescripcion.getText();
+        String precio = textFieldPrecio.getText();
+
+
+        if (!codigo.isEmpty()&&!descripcion.isEmpty()&&!precio.isEmpty()) {
+
+            try {
+                long cod = Long.parseLong(codigo);
+                long pres = Long.parseLong(precio);
+                ControladorArriendoEquipos.getInstance().creaImplemento(cod,descripcion,pres);
+                JOptionPane.showMessageDialog(this,"Implemento creado satisfactoriamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                textFieldDescripcion.setText("");
+                textFieldPrecio.setText("");
+                textFieldCodigo.setText("");
+            }catch (EquipoException e){
+                JOptionPane.showMessageDialog(this,e.getMessage(),"Advertencia",JOptionPane.WARNING_MESSAGE);
+            }catch (NumberFormatException | NullPointerException nfe) {
+                JOptionPane.showMessageDialog(this,"Ha ocurrido un error, debe ingreser solo datos numericos","",JOptionPane.ERROR_MESSAGE);
+            }
+        }else {
+            JOptionPane.showMessageDialog(this,"Ha ocurrido un error, no se puede ingresar el implemento","",JOptionPane.ERROR_MESSAGE);
+        }
     }
+
 
     private void onCancel() {
         // add your code here if necessary

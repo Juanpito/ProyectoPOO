@@ -25,12 +25,12 @@ public class ControladorArriendoEquipos implements Serializable {
         arriendos = new ArrayList<>();
     }
 
-    public static ControladorArriendoEquipos getInstance() {
-        if (instance == null) {
-            instance = new ControladorArriendoEquipos();
+        public static ControladorArriendoEquipos getInstance() {
+            if (instance == null) {
+                instance = new ControladorArriendoEquipos();
+            }
+            return instance;
         }
-        return instance;
-    }
 
     public void creaCliente(String rut, String nom, String dir, String tel) throws ClienteException {
         //si existe un cliente con el mismo rut, arroja una excepcion
@@ -126,10 +126,7 @@ public class ControladorArriendoEquipos implements Serializable {
             throw new ArriendoException("El arriendo no tiene equipos asociados");
         }
         arriendo.setEstado(EstadoArriendo.ENTREGADO);
-        // El monto total al hacer esto es el precio de 1 dia debido a que realiza al comenzar el arriendo
-        // No es una opción ideal debido a que en el caso que el cliente se demore una cantidad ridicula de tiempo
-        // el sistema mostrara el precio mal, sin embargo de acuerdo al diagrama de clases no hay otro metodo dispoible
-        // para obtener los precios
+
         return arriendo.getMontoTotal();
     }
 
@@ -528,8 +525,6 @@ public class ControladorArriendoEquipos implements Serializable {
 
     }
 
-    // De acuerdo con el enunciado se pueden agregar metodos privados que mejoren el codigo
-    // En ese caso consiederamos que es una operación lo sufucientemente frecuente como para que este en su propio metodo
     private String formateaFecha(LocalDate fecha) {
         return fecha.format(DateTimeFormatter.ofPattern("dd/MM/yy"));
     }

@@ -115,7 +115,8 @@ public class UIArriendoEquipos {
 
         try {
             ControladorArriendoEquipos.getInstance().creaCliente(rut, nom, dir, tel);
-            System.out.println("Cliente creado exitosamente :)");
+
+            System.out.println("Cliente creado exitosamente");
         } catch (ClienteException e) {
             System.out.println(e.getMessage());
         }
